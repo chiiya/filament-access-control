@@ -1,0 +1,24 @@
+on: [push]
+name: Lint
+jobs:
+  ecs:
+    name: Easy Coding Standard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v1
+      - name: Easy Coding Standard Action
+        run: ./vendor/bin/ecs check --fix
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Lint files
