@@ -1,26 +1,42 @@
-# Admin user, roles and permission management for Laravel Filament
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/41773797/131910226-676cb28a-332d-4162-a6a8-136a93d5a70f.png" alt="Banner" style="width: 100%; max-width: 800px;" />
+</p>
+
+# Filament Access Control
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/chiiya/filament-access-control.svg?style=flat-square)](https://packagist.org/packages/chiiya/filament-access-control)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/chiiya/filament-access-control/run-tests?label=tests)](https://github.com/chiiya/filament-access-control/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/chiiya/filament-access-control/Check%20&%20fix%20styling?label=code%20style)](https://github.com/chiiya/filament-access-control/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/chiiya/filament-access-control/Lint?label=code%20style)](https://github.com/chiiya/filament-access-control/actions?query=workflow%3A"Lint"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/chiiya/filament-access-control.svg?style=flat-square)](https://packagist.org/packages/chiiya/filament-access-control)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Opinionated setup for managing admin users, roles and permissions within [Laravel Filament](https://github.com/laravel-filament/filament)
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/filament-access-control.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/filament-access-control)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+## Features
+- Separate database table for filament admin users (separate guard, separate password broker)
+- Uses [spatie/laravel-permission](https://github.com/spatie/laravel-permission) for roles and permissions
+- Adds the missing password reset flow to Filament
+- Optional account expiry for admin users
+- Fully localized
+- CRUD resources for admin users, roles and permissions
+- Admin users _may_ belong to **one** role
+- Admin users can have direct permissions or indirect permissions through their role
 
 ## Installation
 
-You can install the package via composer:
+1. Install the package via composer:
 
 ```bash
 composer require chiiya/filament-access-control
+```
+
+2. Update your `config/filament.php` file to use the package's guard and `Login` page:
+
+```php
+'auth' => [
+    'guard' => env('FILAMENT_AUTH_GUARD', 'filament'),
+    'pages' => [
+        'login' => \Chiiya\FilamentAccessControl\Http\Livewire\Login::class,
+    ],
+],
 ```
 
 You can publish and run the migrations with:
@@ -36,11 +52,10 @@ You can publish the config file with:
 php artisan vendor:publish --tag="filament-access-control-config"
 ```
 
-This is the contents of the published config file:
+Optionally, you can publish the translations using
 
-```php
-return [
-];
+```bash
+php artisan vendor:publish --tag="filament-access-control-translations"
 ```
 
 Optionally, you can publish the views using
@@ -51,16 +66,31 @@ php artisan vendor:publish --tag="filament-access-control-views"
 
 ## Usage
 
+### Feature: Account Expiry
+With the optional account expiry feature, all accounts require an expiration date. When 
+accounts are expired, they can no longer log in. To enable the account expiry feature, 
+enable the feature flag in the config file:
+
 ```php
-$filamentAccessControl = new Chiiya\FilamentAccessControl();
-echo $filamentAccessControl->echoPhrase('Hello, Chiiya!');
+'features' => [
+    \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY,
+],
 ```
 
-## Testing
+You will also need to add the `EnsureAccountIsNotExpired` middleware to your filament auth middleware config:
 
-```bash
-composer test
+```php
+use Chiiya\FilamentAccessControl\Http\Middleware\EnsureAccountIsNotExpired;
+
+'middleware' => [
+    'auth' => [
+        Authenticate::class,
+        EnsureAccountIsNotExpired::class,
+    ],
+]
 ```
+
+## Screenshots
 
 ## Changelog
 
@@ -69,15 +99,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [Elisha Witte](https://github.com/chiiya)
-- [All Contributors](../../contributors)
 
 ## License
 
