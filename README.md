@@ -52,13 +52,13 @@ You can publish the config file with:
 php artisan vendor:publish --tag="filament-access-control-config"
 ```
 
-Optionally, you can publish the translations using
+Optionally, you can publish the translations with:
 
 ```bash
 php artisan vendor:publish --tag="filament-access-control-translations"
 ```
 
-Optionally, you can publish the views using
+Optionally, you can publish the views with:
 
 ```bash
 php artisan vendor:publish --tag="filament-access-control-views"
