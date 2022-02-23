@@ -40,7 +40,8 @@ composer require chiiya/filament-access-control
 ],
 ```
 
-3. To seed necessary data (base role & permissions) call the package seeder in your database seeder:
+3. To seed necessary data (base role & permissions) call the package seeder in your database seeder, or manually
+using `php artisan db:seed --class="Chiiya\\\FilamentAccessControl\\\Database\\\Seeders\\\FilamentAccessControlSeeder"`:
 
 ```php
 use Chiiya\FilamentAccessControl\Database\Seeders\FilamentAccessControlSeeder;
