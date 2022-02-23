@@ -11,14 +11,15 @@
 Opinionated setup for managing admin users, roles and permissions within [Laravel Filament](https://github.com/laravel-filament/filament)
 
 ## Features
-- Separate database table for filament admin users (separate guard, separate password broker)
+- Separate database table for filament admin users (separate model, separate guard, separate password broker)
 - Uses [spatie/laravel-permission](https://github.com/spatie/laravel-permission) for roles and permissions
 - Adds the missing password reset flow to Filament
-- Optional account expiry for admin users
 - Fully localized
 - CRUD resources for admin users, roles and permissions
 - Admin users _may_ belong to **one** role
 - Admin users can have direct permissions or indirect permissions through their role
+- Security: When creating admin users through the admin interface, no password is specified. Instead, the user receives an email prompting them to set their password
+- Security: Optional account expiry for admin users
 
 ## Installation
 
