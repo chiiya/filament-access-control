@@ -9,7 +9,7 @@ return [
     | \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY
     */
     'features' => [
-//        \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY
+        //        \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY
     ],
 
     /*
