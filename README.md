@@ -18,8 +18,8 @@ Opinionated setup for managing admin users, roles and permissions within [Larave
 - CRUD resources for admin users, roles and permissions
 - Admin users _may_ belong to **one** role
 - Admin users can have direct permissions or indirect permissions through their role
-- Security: When creating admin users through the admin interface, no password is specified. Instead, the user receives an email prompting them to set their password
-- Security: Optional account expiry for admin users
+- When creating admin users through the admin interface, no password is specified. Instead, the user receives an email prompting them to set their password
+- Optional account expiry for admin users. Expired accounts are no longer able to log in
 
 ## Installation
 
@@ -145,4 +145,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ## Roadmap
 
 - [ ] Make account expiry date optional
-- [ ] Add 2-Factor Authentication
+- [ ] Add optional 2-factor authentication
