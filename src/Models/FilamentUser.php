@@ -80,7 +80,7 @@ class FilamentUser extends Authenticatable implements \Filament\Models\Contracts
      */
     public function isExpired(): bool
     {
-        return now()->gt($this->expires_at);
+        return $this->expires_at !== null && now()->gt($this->expires_at);
     }
 
     /**

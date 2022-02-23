@@ -1,11 +1,13 @@
 {
     "name": "chiiya/filament-access-control",
-    "description": "Admin user, roles and permission management for Laravel Filament",
+    "description": "Admin user, role and permission management for Laravel Filament",
     "keywords": [
         "chiiya",
         "laravel",
         "filament",
-        "filament-access-control"
+        "filament-access-control",
+        "roles",
+        "permissions"
     ],
     "homepage": "https://github.com/chiiya/filament-access-control",
     "license": "MIT",

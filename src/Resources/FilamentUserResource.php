@@ -108,7 +108,11 @@ class FilamentUserResource extends Resource
                     (Feature::ACCOUNT_EXPIRY)->enabled()
                     ? [
                         Filter::make(__('filament-access-control::default.filters.expired'))
-                            ->query(fn (Builder $query) => $query->where('expires_at', '<=', now())),
+                            ->query(
+                                fn (Builder $query) => $query->whereNotNull(
+                                    'expires_at'
+                                )->where('expires_at', '<=', now())
+                            ),
                     ]
                     : []
                 ),
@@ -171,7 +175,6 @@ class FilamentUserResource extends Resource
                         DatePicker::make('expires_at')
                             ->label(__('filament-access-control::default.fields.expires_at'))
                             ->validationAttribute(__('filament-access-control::default.fields.expires_at'))
-                            ->required()
                             ->minDate(fn (Component $livewire) => self::evaluateMinDate($livewire))
                             ->displayFormat(config('filament-access-control.date_format'))
                             ->dehydrateStateUsing(fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString()),

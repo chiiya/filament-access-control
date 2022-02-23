@@ -46,7 +46,7 @@ class CreateFilamentUser extends Command
             'last_name' => $lastName,
             'password' => Hash::make($password),
         ], (Feature::ACCOUNT_EXPIRY)->enabled() ? [
-            'expires_at' => now()->addMonths(6)->startOfDay(),
+            'expires_at' => now()->addMonths(6)->endOfDay(),
         ] : []);
 
         /** @var FilamentUser $user */

@@ -144,5 +144,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 ## Roadmap
 
-- [ ] Make account expiry date optional
 - [ ] Add optional 2-factor authentication
