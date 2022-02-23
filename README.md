@@ -141,3 +141,8 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+## Roadmap
+
+- [ ] Make account expiry date optional
+- [ ] Add 2-Factor Authentication

@@ -47,12 +47,12 @@ class RoleResource extends Resource
                 TextColumn::make('id')
                     ->label(__('filament-access-control::default.fields.id'))
                     ->sortable(),
-                TextColumn::make('name')
-                    ->label(__('filament-access-control::default.fields.name'))
-                    ->searchable(),
                 TextColumn::make('description')
                     ->label(__('filament-access-control::default.fields.description'))
                     ->getStateUsing(fn (Role $record) => __($record->name)),
+                TextColumn::make('name')
+                    ->label(__('filament-access-control::default.fields.name'))
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->label(__('filament-access-control::default.fields.created_at'))
                     ->dateTime(),
