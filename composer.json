@@ -1,0 +1,53 @@
+{
+    "name": "chiiya/filament-access-control",
+    "description": "Admin user, roles and permission management for Laravel Filament",
+    "keywords": [
+        "chiiya",
+        "laravel",
+        "filament",
+        "filament-access-control"
+    ],
+    "homepage": "https://github.com/chiiya/filament-access-control",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elisha Witte",
+            "email": "github@chiiya.moe",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "filament/filament": "^2.10",
+        "illuminate/contracts": "^9.0",
+        "spatie/laravel-package-tools": "^1.11",
+        "spatie/laravel-permission": "^5.5"
+    },
+    "require-dev": {
+        "chiiya/code-style-php": "^1.1",
+        "orchestra/testbench": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chiiya\\FilamentAccessControl\\": "src",
+            "Chiiya\\FilamentAccessControl\\Database\\Factories\\": "database/factories",
+            "Chiiya\\FilamentAccessControl\\Database\\Seeders\\": "database/seeders"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpro/grumphp": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Chiiya\\FilamentAccessControl\\FilamentAccessControlServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
