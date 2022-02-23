@@ -39,11 +39,29 @@ composer require chiiya/filament-access-control
 ],
 ```
 
+3. To seed necessary data (base role & permissions) call the package seeder in your database seeder:
+
+```php
+use Chiiya\FilamentAccessControl\Database\Seeders\FilamentAccessControlSeeder;
+
+public function run()
+{
+    $this->call(FilamentAccessControlSeeder::class);
+}
+```
+
 You can publish and run the migrations with:
 
 ```bash
 php artisan vendor:publish --tag="filament-access-control-migrations"
 php artisan migrate
+```
+
+Make sure you also publish the [spatie/laravel-permission](https://github.com/spatie/laravel-permission) migrations
+if you haven't done so yet:
+
+```bash
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 ```
 
 You can publish the config file with:
@@ -65,6 +83,17 @@ php artisan vendor:publish --tag="filament-access-control-views"
 ```
 
 ## Usage
+
+### Localizing Role & Permission Names
+Roles and permissions should have names that make them easy to use in code (e.g. `admin-users.update`).
+For the admin you may however wish to localize them or make them more readable. You can do so by simply
+adding a JSON translation entry for the given role or permission name (e.g. `lang/en.json`):
+
+```json
+{
+    "admin-users.update": "Admin Users → Edit"
+}
+```
 
 ### Feature: Account Expiry
 With the optional account expiry feature, all accounts require an expiration date. When 
@@ -91,6 +120,13 @@ use Chiiya\FilamentAccessControl\Http\Middleware\EnsureAccountIsNotExpired;
 ```
 
 ## Screenshots
+
+![Screenshot of Admin Users](./art/admin_users.png)
+![Screenshot of Admin Users - View](./art/admin_users_view.png)
+![Screenshot of Admin Users - Edit](./art/admin_users_edit.png)
+![Screenshot of Roles - Edit](./art/roles_edit.png)
+![Screenshot of Reset Password](./art/reset_password.png)
+![Screenshot of Account Expired](./art/account_expired.png)
 
 ## Changelog
 
