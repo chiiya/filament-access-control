@@ -1,6 +1,4 @@
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/41773797/131910226-676cb28a-332d-4162-a6a8-136a93d5a70f.png" alt="Banner" style="width: 100%; max-width: 800px;" />
-</p>
+![filament-access-control](https://user-images.githubusercontent.com/15029301/155413160-9ba82064-3436-414f-a556-a0bff61528a0.png)
 
 # Filament Access Control
 
