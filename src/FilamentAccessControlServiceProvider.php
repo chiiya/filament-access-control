@@ -3,10 +3,12 @@
 namespace Chiiya\FilamentAccessControl;
 
 use Chiiya\FilamentAccessControl\Commands\CreateFilamentUser;
+use Chiiya\FilamentAccessControl\Commands\Install;
 use Chiiya\FilamentAccessControl\Http\Livewire\AccountExpired;
 use Chiiya\FilamentAccessControl\Http\Livewire\ForgotPassword;
 use Chiiya\FilamentAccessControl\Http\Livewire\Login;
 use Chiiya\FilamentAccessControl\Http\Livewire\ResetPassword;
+use Chiiya\FilamentAccessControl\Http\Livewire\TwoFactorChallenge;
 use Chiiya\FilamentAccessControl\Models\FilamentUser;
 use Chiiya\FilamentAccessControl\Policies\FilamentUserPolicy;
 use Chiiya\FilamentAccessControl\Policies\PermissionPolicy;
@@ -34,7 +36,8 @@ class FilamentAccessControlServiceProvider extends PluginServiceProvider
             ->hasMigration('create_filament_users_table')
             ->hasMigration('create_filament_password_resets_table')
             ->hasViews('filament-access-control')
-            ->hasCommand(CreateFilamentUser::class);
+            ->hasCommand(CreateFilamentUser::class)
+            ->hasCommand(Install::class);
     }
 
     public function packageRegistered(): void
@@ -52,6 +55,7 @@ class FilamentAccessControlServiceProvider extends PluginServiceProvider
         Livewire::component(ForgotPassword::getName(), ForgotPassword::class);
         Livewire::component(ResetPassword::getName(), ResetPassword::class);
         Livewire::component(AccountExpired::getName(), AccountExpired::class);
+        Livewire::component(TwoFactorChallenge::getName(), TwoFactorChallenge::class);
         Gate::policy(FilamentUser::class, FilamentUserPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Permission::class, PermissionPolicy::class);

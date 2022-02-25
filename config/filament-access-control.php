@@ -7,9 +7,11 @@ return [
     |--------------------------------------------------------------------------
     | The following features are available:
     | \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY
+    | \Chiiya\FilamentAccessControl\Enumerators\Feature::TWO_FACTOR
     */
     'features' => [
-        //        \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY
+        //        \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY,
+        //        \Chiiya\FilamentAccessControl\Enumerators\Feature::TWO_FACTOR,
     ],
 
     /*

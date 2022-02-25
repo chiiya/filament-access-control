@@ -1,0 +1,21 @@
+<x-filament-access-control::auth-page action="verify">
+    <div>
+        <h2 class="font-bold tracking-tight text-center text-2xl">
+            {{ __('filament-access-control::default.pages.two_factor') }}
+        </h2>
+    </div>
+
+    <p>{{ __('filament-access-control::default.messages.enter_code') }}</p>
+
+    {{ $this->form }}
+
+    <x-filament::button type="submit" form="verify" class="w-full">
+        {{ __('filament-access-control::default.buttons.submit') }}
+    </x-filament::button>
+
+    <div class="text-center">
+        <a class="text-primary-600 hover:text-primary-700" href="{{ route('filament.auth.login') }}">
+            {{ __('filament-access-control::default.buttons.back_to_login') }}
+        </a>
+    </div>
+</x-filament-access-control::auth-page>

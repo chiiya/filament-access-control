@@ -3,6 +3,7 @@
 namespace Chiiya\FilamentAccessControl\Http\Livewire;
 
 use Filament\Facades\Filament;
+use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -11,17 +12,20 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Password;
 use Livewire\Component;
 
+/**
+ * @property ComponentContainer $form
+ */
 class ForgotPassword extends Component implements HasForms
 {
     use CanNotify;
     use InteractsWithForms;
 
-    public $email = '';
+    public ?string $email = '';
 
-    public function mount(): void
+    public function mount()
     {
         if (Filament::auth()->check()) {
-            redirect()->intended(Filament::getUrl());
+            return redirect()->intended(Filament::getUrl());
         }
 
         $this->form->fill();

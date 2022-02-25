@@ -20,6 +20,7 @@ Opinionated setup for managing admin users, roles and permissions within [Larave
 - Admin users can have direct permissions or indirect permissions through their role
 - When creating admin users through the admin interface, no password is specified. Instead, the user receives an email prompting them to set their password
 - Optional account expiry for admin users. Expired accounts are no longer able to log in
+- Optional email based two-factor authentication.
 
 ## Installation
 
@@ -40,37 +41,22 @@ composer require chiiya/filament-access-control
 ],
 ```
 
-3. To seed necessary data (base role & permissions) call the package seeder in your database seeder, or manually
-using `php artisan db:seed --class="Chiiya\\\FilamentAccessControl\\\Database\\\Seeders\\\FilamentAccessControlSeeder"`:
-
-```php
-use Chiiya\FilamentAccessControl\Database\Seeders\FilamentAccessControlSeeder;
-
-public function run()
-{
-    $this->call(FilamentAccessControlSeeder::class);
-}
-```
-
-You can publish and run the migrations with:
+3. Publish the migrations and config, then run the migrations. Make sure you also publish 
+and run the [spatie/laravel-permission](https://github.com/spatie/laravel-permission) migrations
+if you haven't done so yet.
 
 ```bash
 php artisan vendor:publish --tag="filament-access-control-migrations"
+php artisan vendor:publish --tag="filament-access-control-config"
 php artisan migrate
 ```
 
-Make sure you also publish the [spatie/laravel-permission](https://github.com/spatie/laravel-permission) migrations
-if you haven't done so yet:
+4. To seed the necessary base data (role & permissions), run `php artisan filament-access-control:install`
+or call the `Chiiya\FilamentAccessControl\Database\Seeders\FilamentAccessControlSeeder` seeder in your database seeder.
 
-```bash
-php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="filament-access-control-config"
-```
+5. Create an admin user using `php artisan filament-access-control:user`. If you create users programmatically
+(e.g. in your database seeder), make sure to assign them the `super-admin` role if you want them to be able to 
+access the role and user management.
 
 Optionally, you can publish the translations with:
 
@@ -121,6 +107,17 @@ use Chiiya\FilamentAccessControl\Http\Middleware\EnsureAccountIsNotExpired;
 ]
 ```
 
+### Feature: Two-Factor Authentication
+With the optional two-factor authentication feature, users must enter a verification code sent
+via email upon login. To enable the two-factor authentication feature, enable the feature
+flag in the config file:
+
+```php
+'features' => [
+    \Chiiya\FilamentAccessControl\Enumerators\Feature::TWO_FACTOR,
+],
+```
+
 ## Screenshots
 
 ![Screenshot of Admin Users](./art/admin_users.png)
@@ -141,7 +138,3 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Roadmap
-
-- [ ] Add optional 2-factor authentication

@@ -5,17 +5,20 @@ namespace Chiiya\FilamentAccessControl\Commands;
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use Chiiya\FilamentAccessControl\Enumerators\RoleName;
 use Chiiya\FilamentAccessControl\Models\FilamentUser;
+use Filament\Commands\Concerns\CanValidateInput;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
 class CreateFilamentUser extends Command
 {
+    use CanValidateInput;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'filament:create-user {email} {first_name} {last_name} {password}';
+    protected $signature = 'filament-access-control:user';
 
     /**
      * The console command description.
@@ -29,31 +32,30 @@ class CreateFilamentUser extends Command
      */
     public function handle(): int
     {
-        $email = $this->input->getArgument('email');
-        $firstName = $this->input->getArgument('first_name');
-        $lastName = $this->input->getArgument('last_name');
-        $password = $this->input->getArgument('password');
+        $values = [
+            'first_name' => $this->validateInput(fn () => $this->ask('First Name'), 'first_name', ['required']),
+            'last_name' => $this->validateInput(fn () => $this->ask('Last Name'), 'last_name', ['required']),
+            'email' => $this->validateInput(
+                fn () => $this->ask('Email address'),
+                'email',
+                ['required', 'email', 'unique:filament_users']
+            ),
+            'password' => Hash::make(
+                $this->validateInput(fn () => $this->secret('Password'), 'password', ['required', 'min:8'])
+            ),
+        ];
 
-        if (FilamentUser::query()->where('email', $email)->exists()) {
-            $this->output->error('User already found in database.');
-
-            return self::FAILURE;
+        if ((Feature::ACCOUNT_EXPIRY)->enabled()) {
+            $values = array_merge($values, [
+                'expires_at' => now()->addMonths(6)->endOfDay(),
+            ]);
         }
 
-        $attributes = array_merge([
-            'email' => $email,
-            'first_name' => $firstName,
-            'last_name' => $lastName,
-            'password' => Hash::make($password),
-        ], (Feature::ACCOUNT_EXPIRY)->enabled() ? [
-            'expires_at' => now()->addMonths(6)->endOfDay(),
-        ] : []);
-
-        /** @var FilamentUser $user */
-        $user = FilamentUser::query()->create($attributes);
+        $user = FilamentUser::query()->create($values);
         $user->assignRole(RoleName::SUPER_ADMIN);
         $user->save();
-        $this->output->success('User has been added.');
+        $loginUrl = route('filament.auth.login');
+        $this->info("Success! {$user->email} may now log in at {$loginUrl}.");
 
         return self::SUCCESS;
     }

@@ -5,6 +5,7 @@ namespace Chiiya\FilamentAccessControl\Enumerators;
 enum Feature
 {
     case ACCOUNT_EXPIRY;
+    case TWO_FACTOR;
 
     public function enabled(): bool
     {

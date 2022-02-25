@@ -15,10 +15,11 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->dateTime('expires_at')->nullable();
+            $table->dateTime('two_factor_expires_at')->nullable();
+            $table->string('two_factor_code')->nullable();
             $table->rememberToken();
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

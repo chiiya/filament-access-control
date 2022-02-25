@@ -20,13 +20,13 @@ class ResetPassword extends Component implements HasForms
     use CanNotify;
     use InteractsWithForms;
 
-    public $email = '';
+    public ?string $email = '';
 
-    public $token = '';
+    public ?string $token = '';
 
-    public $password = '';
+    public ?string $password = '';
 
-    public $password_confirm = '';
+    public ?string $password_confirm = '';
 
     public function mount(string $token): void
     {

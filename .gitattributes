@@ -8,4 +8,4 @@
 /art                export-ignore
 /.editorconfig      export-ignore
 /ecs.php            export-ignore
-/grumphp            export-ignore
+/grumphp.yml        export-ignore

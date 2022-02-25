@@ -26,20 +26,16 @@ class SetPassword extends Notification implements ShouldQueue
 
     /**
      * Build the mail representation of the notification.
-     *
-     * @param mixed $notifiable
      */
-    public function toMail($notifiable): MailMessage
+    public function toMail(mixed $notifiable): MailMessage
     {
         return $this->buildMailMessage($this->resetUrl($notifiable));
     }
 
     /**
      * Get the reset URL for the given notifiable.
-     *
-     * @param mixed $notifiable
      */
-    protected function resetUrl($notifiable): string
+    protected function resetUrl(mixed $notifiable): string
     {
         return url(route('filament.password.reset', [
             'token' => $this->token,
@@ -48,11 +44,9 @@ class SetPassword extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the reset password notification mail message for the given URL.
-     *
-     * @param string $url
+     * Get the set password notification mail message for the given URL.
      */
-    protected function buildMailMessage($url): MailMessage
+    protected function buildMailMessage(string $url): MailMessage
     {
         $host = parse_url(url()->to('/'))['host'];
 
@@ -60,15 +54,9 @@ class SetPassword extends Notification implements ShouldQueue
             ->subject(__('filament-access-control::default.notifications.password_set.title', [
                 'host' => $host,
             ]))
-            ->greeting(__('filament-access-control::default.notifications.password_set.title', [
+            ->markdown('filament-access-control::emails.password-set', [
+                'url' => $url,
                 'host' => $host,
-            ]))
-            ->line(__('filament-access-control::default.notifications.password_set.message', [
-                'host' => $host,
-            ]))
-            ->action(__('filament-access-control::default.notifications.password_set.button'), $url)
-            ->line(__('This password reset link will expire in :count minutes.', [
-                'count' => config('auth.passwords.'.config('auth.defaults.passwords').'.expire'),
-            ]));
+            ]);
     }
 }

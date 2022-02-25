@@ -9,10 +9,8 @@ class ResetPassword extends LaravelResetPassword
 {
     /**
      * Get the reset URL for the given notifiable.
-     *
-     * @param mixed $notifiable
      */
-    protected function resetUrl($notifiable): string
+    protected function resetUrl(mixed $notifiable): string
     {
         return url(route('filament.password.reset', [
             'token' => $this->token,
@@ -33,14 +31,9 @@ class ResetPassword extends LaravelResetPassword
             ->subject(__('filament-access-control::default.notifications.password_reset.title', [
                 'host' => $host,
             ]))
-            ->greeting(__('filament-access-control::default.notifications.password_reset.title', [
+            ->markdown('filament-access-control::emails.password-reset', [
+                'url' => $url,
                 'host' => $host,
-            ]))
-            ->line(__('You are receiving this email because we received a password reset request for your account.'))
-            ->action(__('Reset Password'), $url)
-            ->line(__('This password reset link will expire in :count minutes.', [
-                'count' => config('auth.passwords.'.config('auth.defaults.passwords').'.expire'),
-            ]))
-            ->line(__('If you did not request a password reset, no further action is required.'));
+            ]);
     }
 }

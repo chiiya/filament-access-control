@@ -1,4 +1,4 @@
-<x-filament-access-control::auth-page action="authenticate">
+<x-filament-access-control::auth-page action="login">
     <div>
         <h2 class="font-bold tracking-tight text-center text-2xl">
             {{ __('filament::login.heading') }}
@@ -7,7 +7,7 @@
 
     {{ $this->form }}
 
-    <x-filament::button type="submit" form="authenticate" class="w-full">
+    <x-filament::button type="submit" form="login" class="w-full">
         {{ __('filament::login.buttons.submit.label') }}
     </x-filament::button>
 
