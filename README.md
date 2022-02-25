@@ -117,13 +117,11 @@ flag in the config file:
 ```
 
 ## Screenshots
-
-![Screenshot of Admin Users](./art/admin_users.png)
 ![Screenshot of Admin Users - View](./art/admin_users_view.png)
-![Screenshot of Admin Users - Edit](./art/admin_users_edit.png)
 ![Screenshot of Roles - Edit](./art/roles_edit.png)
 ![Screenshot of Reset Password](./art/reset_password.png)
 ![Screenshot of Account Expired](./art/account_expired.png)
+![Screenshot of Two-Factor Authentication](./art/two_factor.png)
 
 ## Changelog
 
