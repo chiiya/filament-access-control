@@ -4,7 +4,7 @@ namespace Chiiya\FilamentAccessControl\Traits;
 
 use Filament\Facades\Filament;
 
-class AuthorizesPageAccess
+trait AuthorizesPageAccess
 {
     public static function authorizePageAccess(): void
     {
