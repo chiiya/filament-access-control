@@ -88,9 +88,9 @@ class ProductPolicy
 }
 ```
 
-### Authorizing Pages
-This package comes with a simple trait that you can use to authorize access to pages based
-on a permission.
+#### Authorizing Pages
+This package comes with a simple trait that you can use to authorize access to custom
+pages based on a permission.
 
 ```php
 use Chiiya\FilamentAccessControl\Traits\AuthorizesPageAccess;
@@ -108,7 +108,7 @@ class MyPage extends Page
 }
 ```
 
-### Authorizing Actions
+#### Authorizing Actions
 One way to authorize actions is to use the `visible()` method:
 
 ```php
