@@ -70,6 +70,52 @@ php artisan vendor:publish --tag="filament-access-control-views"
 
 ## Usage
 
+### Authorizing Resources, Pages & Actions
+
+#### Authorizing Resources
+To authorize access to resources, use policies as described in the 
+[Filament documentation](https://filamentphp.com/docs/2.x/admin/resources#authorization).
+
+```php
+class ProductPolicy
+{
+    public function viewAny(FilamentUser $user): bool
+    {
+        return $user->can('products.view');
+    }
+    
+    // ...
+}
+```
+
+### Authorizing Pages
+This package comes with a simple trait that you can use to authorize access to pages based
+on a permission.
+
+```php
+use Chiiya\FilamentAccessControl\Traits\AuthorizesPageAccess;
+
+class MyPage extends Page
+{
+    use AuthorizesPageAccess;
+    
+    public static string $permission = 'my-page.view';
+    
+    public function mount(): void
+    {
+        static::authorizePageAccess();
+    }
+}
+```
+
+### Authorizing Actions
+One way to authorize actions is to use the `visible()` method:
+
+```php
+ButtonAction::make('exports')
+    ->visible(fn () => Filament::auth()->user()->can('exports.view'))
+```
+
 ### Localizing Role & Permission Names
 Roles and permissions should have names that make them easy to use in code (e.g. `admin-users.update`).
 For the admin you may however wish to localize them or make them more readable. You can do so by simply

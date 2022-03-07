@@ -26,5 +26,7 @@ grumphp:
         - 'ini_set'
         - 'error_reporting'
         - 'set_time_limit'
+      whitelist_patterns:
+        - /^(?!_ide_helper\.php)/
     ecs:
       config: ecs.php
