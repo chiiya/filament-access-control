@@ -27,7 +27,7 @@ class PermissionGroup extends CheckboxList
         parent::setUp();
 
         $this->afterStateHydrated(function (self $component, ?array $state): void {
-            if (count($state ?? [])) {
+            if (count($state ?? []) > 0) {
                 return;
             }
 
@@ -67,7 +67,7 @@ class PermissionGroup extends CheckboxList
                 ->where('guard_name', 'filament')
                 ->pluck('name', 'id')
                 ->map(fn (string $name) => __($name))
-                ->all()
+                ->all(),
         );
 
         $this->dehydrated(false);

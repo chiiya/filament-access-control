@@ -48,7 +48,7 @@ class TwoFactorCode extends Notification implements ShouldQueue
     {
         $host = parse_url(url()->to('/'))['host'];
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject(__('filament-access-control::default.notifications.two_factor.title', [
                 'host' => $host,
             ]))

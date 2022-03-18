@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Validation\Rules\Password;
 return [
     /*
     |--------------------------------------------------------------------------
@@ -20,7 +21,7 @@ return [
     |--------------------------------------------------------------------------
     | Rules for the password set during the passwort reset flow.
     */
-    'password_rules' => [\Illuminate\Validation\Rules\Password::min(8)],
+    'password_rules' => [Password::min(8)],
 
     /*
     |--------------------------------------------------------------------------

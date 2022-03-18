@@ -51,9 +51,9 @@ class Login extends FilamentLogin
             return;
         }
 
-        if ((Feature::TWO_FACTOR)->enabled()) {
+        if (Feature::TWO_FACTOR->enabled()) {
             if (! $user->hasTwoFactorCode() || $user->twoFactorCodeIsExpired()) {
-                $user->notify(new TwoFactorCode());
+                $user->notify(new TwoFactorCode);
             }
 
             session()->put('filament.id', $user->getKey());

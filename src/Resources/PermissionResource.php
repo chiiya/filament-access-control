@@ -15,7 +15,6 @@ use Spatie\Permission\Models\Permission;
 class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
 
     public static function form(Form $form): Form
@@ -30,7 +29,7 @@ class PermissionResource extends Resource
                     ->unique(
                         config('permission.table_names.permissions'),
                         'name',
-                        fn (?Permission $record): ?Permission => $record
+                        fn (?Permission $record): ?Permission => $record,
                     ),
             ]);
     }

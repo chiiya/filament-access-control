@@ -4,5 +4,6 @@ namespace Chiiya\FilamentAccessControl\Enumerators;
 
 class RoleName
 {
-    public const SUPER_ADMIN = 'super-admin';
+    /** @var string */
+    final public const SUPER_ADMIN = 'super-admin';
 }

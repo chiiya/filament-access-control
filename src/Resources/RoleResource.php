@@ -16,7 +16,6 @@ use Spatie\Permission\Models\Role;
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
@@ -32,7 +31,7 @@ class RoleResource extends Resource
                     ->unique(
                         config('permission.table_names.permissions'),
                         'name',
-                        fn (?Role $record): ?Role => $record
+                        fn (?Role $record): ?Role => $record,
                     ),
                 PermissionGroup::make('permissions')
                     ->label(__('filament-access-control::default.fields.permissions'))

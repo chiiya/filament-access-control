@@ -19,13 +19,9 @@ class ResetPassword extends Component implements HasForms
 {
     use CanNotify;
     use InteractsWithForms;
-
     public ?string $email = '';
-
     public ?string $token = '';
-
     public ?string $password = '';
-
     public ?string $password_confirm = '';
 
     public function mount(string $token): void
@@ -56,7 +52,7 @@ class ResetPassword extends Component implements HasForms
                 $user->setRememberToken(Str::random(60));
                 $user->save();
                 event(new PasswordReset($user));
-            }
+            },
         );
 
         if ($response === Password::PASSWORD_RESET) {

@@ -12,9 +12,8 @@ class SetPassword extends Notification implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        protected string $token
-    ) {
-    }
+        protected string $token,
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -50,7 +49,7 @@ class SetPassword extends Notification implements ShouldQueue
     {
         $host = parse_url(url()->to('/'))['host'];
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject(__('filament-access-control::default.notifications.password_set.title', [
                 'host' => $host,
             ]))

@@ -77,7 +77,7 @@ class AuthService
         $user = $this->getChallengedUser();
 
         if ($user->twoFactorCodeIsExpired()) {
-            $user->notify(new TwoFactorCode());
+            $user->notify(new TwoFactorCode);
 
             throw new InvalidCodeException(__('filament-access-control::default.messages.code_expired'));
         }

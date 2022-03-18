@@ -19,7 +19,6 @@ class ForgotPassword extends Component implements HasForms
 {
     use CanNotify;
     use InteractsWithForms;
-
     public ?string $email = '';
 
     public function mount()

@@ -3,7 +3,7 @@
 # Filament Access Control
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/chiiya/filament-access-control.svg?style=flat-square)](https://packagist.org/packages/chiiya/filament-access-control)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/chiiya/filament-access-control/Lint?label=code%20style)](https://github.com/chiiya/filament-access-control/actions?query=workflow%3A"Lint"+branch%3Amaster)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/chiiya/filament-access-control/lint?label=code%20style)](https://github.com/chiiya/filament-access-control/actions?query=workflow%3Alint+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/chiiya/filament-access-control.svg?style=flat-square)](https://packagist.org/packages/chiiya/filament-access-control)
 
 Opinionated setup for managing admin users, roles and permissions within [Laravel Filament](https://github.com/laravel-filament/filament)

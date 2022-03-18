@@ -27,7 +27,7 @@ class ResetPassword extends LaravelResetPassword
     {
         $host = parse_url(url()->to('/'))['host'];
 
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject(__('filament-access-control::default.notifications.password_reset.title', [
                 'host' => $host,
             ]))

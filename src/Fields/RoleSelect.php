@@ -14,7 +14,7 @@ class RoleSelect extends Select
 
         if ($model === null) {
             $class = $this->getModel();
-            $model = new $class();
+            $model = new $class;
         }
 
         return $model->roles();
@@ -46,7 +46,7 @@ class RoleSelect extends Select
                 ->where('guard_name', 'filament')
                 ->pluck('name', 'id')
                 ->map(fn (string $name) => __($name))
-                ->all()
+                ->all(),
         );
 
         $this->dehydrated(false);

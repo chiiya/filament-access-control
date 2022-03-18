@@ -21,7 +21,6 @@ class TwoFactorChallenge extends Component implements HasForms
 {
     use CanNotify;
     use InteractsWithForms;
-
     public ?string $code = '';
 
     public function mount(AuthService $auth)

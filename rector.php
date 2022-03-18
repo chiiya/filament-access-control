@@ -1,11 +1,10 @@
 <?php declare(strict_types=1);
 
 use Chiiya\CodeStyle\CodeStyle;
+use Rector\Core\Configuration\Option;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\EasyCodingStandard\ValueObject\Option;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->import(CodeStyle::ECS);
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::PATHS, [
         __DIR__.'/src',
@@ -14,4 +13,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         __DIR__.'/resources/lang',
         __DIR__.'/routes',
     ]);
+    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
+    $containerConfigurator->import(CodeStyle::RECTOR);
 };

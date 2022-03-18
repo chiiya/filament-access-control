@@ -8,9 +8,15 @@ use Chiiya\FilamentAccessControl\Enumerators\RoleName;
 use Chiiya\FilamentAccessControl\Notifications\ResetPassword;
 use Filament\Models\Contracts\FilamentUser as FilamentUserInterface;
 use Filament\Models\Contracts\HasName;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -28,18 +34,18 @@ use Spatie\Permission\Traits\HasRoles;
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property string $full_name
- * @property \Illuminate\Notifications\DatabaseNotification[]|\Illuminate\Notifications\DatabaseNotificationCollection $notifications
+ * @property DatabaseNotification[]|DatabaseNotificationCollection $notifications
  * @property null|int $notifications_count
- * @property \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property Collection|Permission[] $permissions
  * @property null|int $permissions_count
- * @property \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Role[] $roles
+ * @property Collection|Role[] $roles
  * @property null|int $roles_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|FilamentUser newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FilamentUser newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FilamentUser permission($permissions)
- * @method static \Illuminate\Database\Eloquent\Builder|FilamentUser query()
- * @method static \Illuminate\Database\Eloquent\Builder|FilamentUser role($roles, $guard = null)
+ * @method static Builder|FilamentUser newModelQuery()
+ * @method static Builder|FilamentUser newQuery()
+ * @method static Builder|FilamentUser permission($permissions)
+ * @method static Builder|FilamentUser query()
+ * @method static Builder|FilamentUser role($roles, $guard = null)
  * @mixin \Eloquent
  */
 class FilamentUser extends Authenticatable implements FilamentUserInterface, HasName
@@ -76,11 +82,18 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
         'two_factor_code',
         'two_factor_expires_at',
     ];
-
     protected $casts = [
         'expires_at' => 'datetime',
         'two_factor_expires_at' => 'datetime',
     ];
+
+    /**
+     * {@inheritDoc}
+     */
+    protected static function newFactory(): FilamentUserFactory
+    {
+        return FilamentUserFactory::new();
+    }
 
     /**
      * Check whether the account is expired.
@@ -160,13 +173,5 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     public function twoFactorCodeIsExpired(): bool
     {
         return $this->two_factor_expires_at instanceof Carbon && now()->gt($this->two_factor_expires_at);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected static function newFactory(): FilamentUserFactory
-    {
-        return FilamentUserFactory::new();
     }
 }

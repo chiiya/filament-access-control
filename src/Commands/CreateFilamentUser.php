@@ -38,14 +38,14 @@ class CreateFilamentUser extends Command
             'email' => $this->validateInput(
                 fn () => $this->ask('Email address'),
                 'email',
-                ['required', 'email', 'unique:filament_users']
+                ['required', 'email', 'unique:filament_users'],
             ),
             'password' => Hash::make(
-                $this->validateInput(fn () => $this->secret('Password'), 'password', ['required', 'min:8'])
+                $this->validateInput(fn () => $this->secret('Password'), 'password', ['required', 'min:8']),
             ),
         ];
 
-        if ((Feature::ACCOUNT_EXPIRY)->enabled()) {
+        if (Feature::ACCOUNT_EXPIRY->enabled()) {
             $values = array_merge($values, [
                 'expires_at' => now()->addMonths(6)->endOfDay(),
             ]);

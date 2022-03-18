@@ -28,7 +28,6 @@ use Livewire\Component;
 class FilamentUserResource extends Resource
 {
     protected static ?string $model = FilamentUser::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
@@ -47,7 +46,7 @@ class FilamentUserResource extends Resource
                                     ->label(__('filament-access-control::default.fields.permissions'))
                                     ->validationAttribute(__('filament-access-control::default.fields.permissions'))
                                     ->resolveStateUsing(
-                                        fn (FilamentUser $record) => $record->getAllPermissions()->pluck('id')->all()
+                                        fn (FilamentUser $record) => $record->getAllPermissions()->pluck('id')->all(),
                                     ),
                             ]),
                     ] : [
@@ -59,9 +58,9 @@ class FilamentUserResource extends Resource
                                     ->label(__('filament-access-control::default.fields.permissions'))
                                     ->validationAttribute(__('filament-access-control::default.fields.permissions')),
                             ]),
-                    ]
+                    ],
                     )
-                    ->columns(1)
+                    ->columns(1),
             );
     }
 
@@ -79,7 +78,7 @@ class FilamentUserResource extends Resource
                     ->label(__('filament-access-control::default.fields.role'))
                     ->getStateUsing(fn (FilamentUser $record) => __(optional($record->roles->first())->name)),
                 ...(
-                    (Feature::ACCOUNT_EXPIRY)->enabled()
+                    Feature::ACCOUNT_EXPIRY->enabled()
                     ? [
                         BooleanColumn::make('active')
                             ->label(__('filament-access-control::default.fields.active'))
@@ -90,7 +89,7 @@ class FilamentUserResource extends Resource
             ])
             ->prependBulkActions([
                 ...(
-                    (Feature::ACCOUNT_EXPIRY)->enabled()
+                    Feature::ACCOUNT_EXPIRY->enabled()
                     ? [
                         BulkAction::make('extend')
                             ->label(__('filament-access-control::default.actions.extend'))
@@ -105,13 +104,13 @@ class FilamentUserResource extends Resource
             ])
             ->filters([
                 ...(
-                    (Feature::ACCOUNT_EXPIRY)->enabled()
+                    Feature::ACCOUNT_EXPIRY->enabled()
                     ? [
                         Filter::make(__('filament-access-control::default.filters.expired'))
                             ->query(
                                 fn (Builder $query) => $query->whereNotNull(
-                                    'expires_at'
-                                )->where('expires_at', '<=', now())
+                                    'expires_at',
+                                )->where('expires_at', '<=', now()),
                             ),
                     ]
                     : []
@@ -170,7 +169,7 @@ class FilamentUserResource extends Resource
                     ->label(__('filament-access-control::default.fields.role'))
                     ->validationAttribute(__('filament-access-control::default.fields.role')),
                 ...(
-                    (Feature::ACCOUNT_EXPIRY)->enabled()
+                    Feature::ACCOUNT_EXPIRY->enabled()
                     ? [
                         DatePicker::make('expires_at')
                             ->label(__('filament-access-control::default.fields.expires_at'))
