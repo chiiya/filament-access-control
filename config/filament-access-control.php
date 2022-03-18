@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Validation\Rules\Password;
+
 return [
     /*
     |--------------------------------------------------------------------------
