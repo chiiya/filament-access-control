@@ -31,7 +31,6 @@ class FilamentAccessControlServiceProvider extends PluginServiceProvider
             ->name('filament-access-control')
             ->hasConfigFile()
             ->hasTranslations()
-            ->hasViews()
             ->hasRoutes('web')
             ->hasMigration('create_filament_users_table')
             ->hasMigration('create_filament_password_resets_table')

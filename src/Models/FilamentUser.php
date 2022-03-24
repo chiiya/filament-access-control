@@ -54,25 +54,13 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     use HasRoles;
     use Notifiable;
 
-    /**
-     * Database table name.
-     *
-     * @var string
-     */
+    /** {@inheritDoc} */
     protected $table = 'filament_users';
 
-    /**
-     * Attributes excluded from JSON responses.
-     *
-     * @var array
-     */
+    /** {@inheritDoc} */
     protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * Attributes that are mass-assignable.
-     *
-     * @var array
-     */
+    /** {@inheritDoc} */
     protected $fillable = [
         'email',
         'password',
@@ -82,6 +70,8 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
         'two_factor_code',
         'two_factor_expires_at',
     ];
+
+    /** {@inheritDoc} */
     protected $casts = [
         'expires_at' => 'datetime',
         'two_factor_expires_at' => 'datetime',
