@@ -78,7 +78,7 @@ class FilamentUserResource extends Resource
                     ->label(__('filament-access-control::default.fields.role'))
                     ->getStateUsing(fn (FilamentUser $record) => __(optional($record->roles->first())->name)),
                 ...(
-                    Feature::ACCOUNT_EXPIRY->enabled()
+                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
                     ? [
                         BooleanColumn::make('active')
                             ->label(__('filament-access-control::default.fields.active'))
@@ -89,7 +89,7 @@ class FilamentUserResource extends Resource
             ])
             ->prependBulkActions([
                 ...(
-                    Feature::ACCOUNT_EXPIRY->enabled()
+                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
                     ? [
                         BulkAction::make('extend')
                             ->label(__('filament-access-control::default.actions.extend'))
@@ -104,7 +104,7 @@ class FilamentUserResource extends Resource
             ])
             ->filters([
                 ...(
-                    Feature::ACCOUNT_EXPIRY->enabled()
+                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
                     ? [
                         Filter::make(__('filament-access-control::default.filters.expired'))
                             ->query(
@@ -169,7 +169,7 @@ class FilamentUserResource extends Resource
                     ->label(__('filament-access-control::default.fields.role'))
                     ->validationAttribute(__('filament-access-control::default.fields.role')),
                 ...(
-                    Feature::ACCOUNT_EXPIRY->enabled()
+                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
                     ? [
                         DatePicker::make('expires_at')
                             ->label(__('filament-access-control::default.fields.expires_at'))

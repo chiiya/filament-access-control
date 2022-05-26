@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Chiiya\FilamentAccessControl\Commands;
 
@@ -33,19 +34,19 @@ class CreateFilamentUser extends Command
     public function handle(): int
     {
         $values = [
-            'first_name' => $this->validateInput(fn () => $this->ask('First Name'), 'first_name', ['required']),
-            'last_name' => $this->validateInput(fn () => $this->ask('Last Name'), 'last_name', ['required']),
+            'first_name' => $this->validateInput(fn() => $this->ask('First Name'), 'first_name', ['required']),
+            'last_name' => $this->validateInput(fn() => $this->ask('Last Name'), 'last_name', ['required']),
             'email' => $this->validateInput(
-                fn () => $this->ask('Email address'),
+                fn() => $this->ask('Email address'),
                 'email',
                 ['required', 'email', 'unique:filament_users'],
             ),
             'password' => Hash::make(
-                $this->validateInput(fn () => $this->secret('Password'), 'password', ['required', 'min:8']),
+                $this->validateInput(fn() => $this->secret('Password'), 'password', ['required', 'min:8']),
             ),
         ];
 
-        if (Feature::ACCOUNT_EXPIRY->enabled()) {
+        if (Feature::enabled(Feature::ACCOUNT_EXPIRY)) {
             $values = array_merge($values, [
                 'expires_at' => now()->addMonths(6)->endOfDay(),
             ]);
