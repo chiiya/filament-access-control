@@ -22,7 +22,7 @@ return [
     |--------------------------------------------------------------------------
     | Rules for the password set during the passwort reset flow.
     */
-    'password_rules' => [Password::min(8)],
+    'password_rules' => ['min:8'],
 
     /*
     |--------------------------------------------------------------------------
