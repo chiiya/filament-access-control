@@ -1,18 +1,16 @@
 <?php declare(strict_types=1);
 
 use Chiiya\CodeStyle\CodeStyle;
-use Rector\Core\Configuration\Option;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Config\RectorConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PATHS, [
+return static function (RectorConfig $config): void {
+    $config->paths([
         __DIR__.'/src',
         __DIR__.'/config',
         __DIR__.'/database',
         __DIR__.'/resources/lang',
         __DIR__.'/routes',
     ]);
-    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
-    $containerConfigurator->import(CodeStyle::RECTOR);
+    $config->importNames();
+    $config->import(CodeStyle::RECTOR);
 };

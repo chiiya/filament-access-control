@@ -26,6 +26,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Password Hint
+    |--------------------------------------------------------------------------
+    | Helper text displayed when setting a new password on the passwort-reset
+    | page. Useful for hinting at complex password requirements.
+    */
+    'password_hint' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Date Format
     |--------------------------------------------------------------------------
     | Display format for datepicker

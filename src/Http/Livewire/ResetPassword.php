@@ -80,6 +80,7 @@ class ResetPassword extends Component implements HasForms
                 ->label(__('filament-access-control::default.fields.password'))
                 ->validationAttribute(__('filament-access-control::default.fields.password'))
                 ->password()
+                ->helperText(config('filament-access-control.password_hint'))
                 ->required()
                 ->rules(config('filament-access-control.password_rules')),
             TextInput::make('password_confirm')
