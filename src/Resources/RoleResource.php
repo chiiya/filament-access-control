@@ -29,7 +29,7 @@ class RoleResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->unique(
-                        config('permission.table_names.permissions'),
+                        config('permission.table_names.roles'),
                         'name',
                         fn (?Role $record): ?Role => $record,
                     ),
