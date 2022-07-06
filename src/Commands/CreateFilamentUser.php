@@ -45,7 +45,7 @@ class CreateFilamentUser extends Command
             ),
         ];
 
-        if (Feature::ACCOUNT_EXPIRY->enabled()) {
+        if (Feature::enabled(Feature::ACCOUNT_EXPIRY)) {
             $values = array_merge($values, [
                 'expires_at' => now()->addMonths(6)->endOfDay(),
             ]);

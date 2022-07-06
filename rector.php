@@ -4,6 +4,7 @@ use Chiiya\CodeStyle\CodeStyle;
 use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $config): void {
+    $config->import(CodeStyle::RECTOR);
     $config->paths([
         __DIR__.'/src',
         __DIR__.'/config',
@@ -12,5 +13,4 @@ return static function (RectorConfig $config): void {
         __DIR__.'/routes',
     ]);
     $config->importNames();
-    $config->import(CodeStyle::RECTOR);
 };

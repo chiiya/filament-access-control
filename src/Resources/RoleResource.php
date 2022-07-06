@@ -28,11 +28,7 @@ class RoleResource extends Resource
                     ->validationAttribute(__('filament-access-control::default.fields.name'))
                     ->required()
                     ->maxLength(255)
-                    ->unique(
-                        config('permission.table_names.permissions'),
-                        'name',
-                        fn (?Role $record): ?Role => $record,
-                    ),
+                    ->unique(config('permission.table_names.roles'), 'name', fn (?Role $record): ?Role => $record),
                 PermissionGroup::make('permissions')
                     ->label(__('filament-access-control::default.fields.permissions'))
                     ->validationAttribute(__('filament-access-control::default.fields.permissions')),

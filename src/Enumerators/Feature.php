@@ -2,12 +2,16 @@
 
 namespace Chiiya\FilamentAccessControl\Enumerators;
 
-enum Feature
+class Feature
 {
-    case ACCOUNT_EXPIRY;
-    case TWO_FACTOR;
-    public function enabled(): bool
+    /** @var string */
+    public const ACCOUNT_EXPIRY = 'account_expiry';
+
+    /** @var string */
+    public const TWO_FACTOR = 'two_factor';
+
+    public static function enabled($feature): bool
     {
-        return in_array($this, config('filament-access-control.features'), true);
+        return in_array($feature, config('filament-access-control.features'), true);
     }
 }
