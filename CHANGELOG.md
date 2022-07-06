@@ -2,6 +2,20 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## 1.4.0 - 2022-07-06
+
+### What's Changed
+
+- Bump dependabot/fetch-metadata from 1.3.1 to 1.3.3 by @dependabot in https://github.com/chiiya/filament-access-control/pull/9
+- Add support for Laravel 8 and PHP 8.0 by @stephenjude in https://github.com/chiiya/filament-access-control/pull/7
+- Fixed validation for role resource by @stephenjude in https://github.com/chiiya/filament-access-control/pull/7
+
+### New Contributors
+
+- @stephenjude made their first contribution in https://github.com/chiiya/filament-access-control/pull/7
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/1.3.5...1.4.0
+
 ## v1.3.5 - 2022-07-01
 
 ### What's Changed
