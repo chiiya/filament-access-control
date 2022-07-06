@@ -2,6 +2,15 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v1.3.5 - 2022-07-01
+
+### What's Changed
+
+- Fixed config serialization
+- Added config option `password_hint` for setting a helper text for the password field on the reset-password page
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/1.3.0...1.3.5
+
 ## v1.3.0 - 2022-03-07
 
 ## What's Changed
