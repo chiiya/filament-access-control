@@ -1,13 +1,11 @@
 <?php declare(strict_types=1);
 
 use Chiiya\CodeStyle\CodeStyle;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\EasyCodingStandard\ValueObject\Option;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->import(CodeStyle::ECS);
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PATHS, [
+return static function (ECSConfig $config): void {
+    $config->import(CodeStyle::ECS);
+    $config->paths([
         __DIR__.'/src',
         __DIR__.'/config',
         __DIR__.'/database',

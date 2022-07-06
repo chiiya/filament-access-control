@@ -3,6 +3,7 @@
 namespace Chiiya\FilamentAccessControl\Fields;
 
 use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Permission\Models\Role;
 
@@ -12,7 +13,7 @@ class RoleSelect extends Select
     {
         $model = $this->getModelInstance();
 
-        if ($model === null) {
+        if (! $model instanceof Model) {
             $class = $this->getModel();
             $model = new $class;
         }

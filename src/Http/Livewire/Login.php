@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Chiiya\FilamentAccessControl\Http\Livewire;
 
@@ -39,7 +38,7 @@ class Login extends FilamentLogin
                 __('filament::login.messages.throttled', [
                     'seconds' => $exception->secondsUntilAvailable,
                     'minutes' => ceil($exception->secondsUntilAvailable / 60),
-                ])
+                ]),
             );
 
             return;
@@ -56,7 +55,7 @@ class Login extends FilamentLogin
         }
 
         if (Feature::enabled(Feature::TWO_FACTOR)) {
-            if (!$user->hasTwoFactorCode() || $user->twoFactorCodeIsExpired()) {
+            if (! $user->hasTwoFactorCode() || $user->twoFactorCodeIsExpired()) {
                 $user->notify(new TwoFactorCode);
             }
 
