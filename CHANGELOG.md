@@ -2,6 +2,14 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v1.5.0 - 2022-08-02
+
+### What's Changed
+
+- Upgraded package to use the [new filament notifications](https://filamentphp.com/docs/2.x/notifications/installation)
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/1.4.0...1.5.0
+
 ## 1.4.0 - 2022-07-06
 
 ### What's Changed
