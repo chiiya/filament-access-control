@@ -9,14 +9,11 @@ use Chiiya\FilamentAccessControl\Services\AuthService;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Http\Livewire\Auth\Login as FilamentLogin;
-use Filament\Http\Livewire\Concerns\CanNotify;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 
 class Login extends FilamentLogin
 {
-    use CanNotify;
-
     public function mount(): void
     {
         parent::mount();

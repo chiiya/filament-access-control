@@ -7,7 +7,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Http\Livewire\Concerns\CanNotify;
+use Filament\Notifications\Notification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Hash;
@@ -17,7 +17,6 @@ use Livewire\Component;
 
 class ResetPassword extends Component implements HasForms
 {
-    use CanNotify;
     use InteractsWithForms;
     public ?string $email = '';
     public ?string $token = '';
@@ -56,7 +55,7 @@ class ResetPassword extends Component implements HasForms
         );
 
         if ($response === Password::PASSWORD_RESET) {
-            $this->notify('success', __('passwords.reset'), true);
+            Notification::make()->title(__('passwords.reset'))->success()->send();
 
             return redirect(route('filament.auth.login', [
                 'email' => $this->email,

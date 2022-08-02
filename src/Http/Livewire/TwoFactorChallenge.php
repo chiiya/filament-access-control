@@ -10,7 +10,7 @@ use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Http\Livewire\Concerns\CanNotify;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -19,7 +19,6 @@ use Livewire\Component;
  */
 class TwoFactorChallenge extends Component implements HasForms
 {
-    use CanNotify;
     use InteractsWithForms;
     public ?string $code = '';
 
@@ -30,7 +29,7 @@ class TwoFactorChallenge extends Component implements HasForms
         }
 
         if (! $auth->hasChallengedUser()) {
-            $this->notify('danger', __('filament-access-control::default.messages.invalid_user'), true);
+            Notification::make()->title(__('filament-access-control::default.messages.invalid_user'))->danger()->send();
 
             return redirect()->route('filament.auth.login');
         }
@@ -45,7 +44,7 @@ class TwoFactorChallenge extends Component implements HasForms
         try {
             $auth->performTwoFactorChallenge($data['code']);
         } catch (UserNotFoundException $exception) {
-            $this->notify('danger', $exception->getMessage(), true);
+            Notification::make()->title($exception->getMessage())->danger()->send();
 
             return redirect()->route('filament.auth.login');
         } catch (InvalidCodeException $exception) {

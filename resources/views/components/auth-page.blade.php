@@ -12,5 +12,6 @@
             {{ $slot }}
         </form>
         <x-filament::footer />
+        @livewire('notifications')
     </div>
 </div>

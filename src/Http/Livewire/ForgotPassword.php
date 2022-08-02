@@ -7,7 +7,7 @@ use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Http\Livewire\Concerns\CanNotify;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Password;
 use Livewire\Component;
@@ -17,7 +17,6 @@ use Livewire\Component;
  */
 class ForgotPassword extends Component implements HasForms
 {
-    use CanNotify;
     use InteractsWithForms;
     public ?string $email = '';
 
@@ -38,7 +37,7 @@ class ForgotPassword extends Component implements HasForms
         ]);
 
         if ($response === Password::RESET_LINK_SENT) {
-            $this->notify('success', __('passwords.sent'));
+            Notification::make()->title(__('passwords.sent'))->success()->send();
         } else {
             $this->addError('email', __($response));
         }
