@@ -46,6 +46,7 @@ if you haven't done so yet.
 ```bash
 php artisan vendor:publish --tag="filament-access-control-migrations"
 php artisan vendor:publish --tag="filament-access-control-config"
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 php artisan migrate
 ```
 
