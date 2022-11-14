@@ -46,6 +46,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|FilamentUser permission($permissions)
  * @method static Builder|FilamentUser query()
  * @method static Builder|FilamentUser role($roles, $guard = null)
+ *
  * @mixin \Eloquent
  */
 class FilamentUser extends Authenticatable implements FilamentUserInterface, HasName
