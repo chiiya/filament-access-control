@@ -15,7 +15,7 @@ jobs:
           php-version: '8.1'
           coverage: none
       - name: Install composer dependencies
-        uses: ramsey/composer-install@v1
+        uses: ramsey/composer-install@v2
       - name: Easy Coding Standard Action
         run: ./vendor/bin/ecs check --fix
       - name: PHP-CS-Fixer Action
