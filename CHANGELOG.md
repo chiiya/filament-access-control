@@ -2,6 +2,27 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v1.6.0 - 2022-12-22
+
+### What's Changed
+
+- Upgraded package to use the [new filament notifications](https://filamentphp.com/docs/2.x/notifications/installation)
+
+### What's Changed
+
+- Fix table 'roles' doesn't exist -> Add spatie-permission vendor:publish by @magarrent in https://github.com/chiiya/filament-access-control/pull/23
+- Add Arabic Translations by @vzool in https://github.com/chiiya/filament-access-control/pull/20
+- Upgraded auth views to resemble the new default Filament auth views
+- Fix roles and permissions not being restricted to filament guard
+- Add compatibility with filament-logger
+
+### New Contributors
+
+- @magarrent made their first contribution in https://github.com/chiiya/filament-access-control/pull/23
+- @vzool made their first contribution in https://github.com/chiiya/filament-access-control/pull/20
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/1.5.0...1.6.0
+
 ## v1.5.0 - 2022-08-02
 
 ### What's Changed
