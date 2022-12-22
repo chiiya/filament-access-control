@@ -11,6 +11,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
@@ -72,6 +73,11 @@ class RoleResource extends Resource
     public static function getPluralLabel(): string
     {
         return __('filament-access-control::default.resources.roles');
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return Role::query()->where('guard_name', '=', 'filament');
     }
 
     protected static function getNavigationGroup(): ?string
