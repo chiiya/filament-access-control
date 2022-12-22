@@ -10,7 +10,7 @@ class AccountExpired extends Component
     public function render(): View
     {
         return view('filament-access-control::expired')
-            ->layout('filament::components.layouts.base', [
+            ->layout('filament::components.layouts.card', [
                 'title' => __('filament-access-control::default.pages.account_expired'),
             ]);
     }

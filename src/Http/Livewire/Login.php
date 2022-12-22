@@ -10,7 +10,9 @@ use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Http\Livewire\Auth\Login as FilamentLogin;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 
 class Login extends FilamentLogin
 {
@@ -25,20 +27,17 @@ class Login extends FilamentLogin
         }
     }
 
-    public function login(AuthService $auth)
+    public function login(AuthService $auth): RedirectResponse
     {
         try {
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
-            $this->addError(
-                'email',
-                __('filament::login.messages.throttled', [
+            throw ValidationException::withMessages([
+                'email' => __('filament::login.messages.throttled', [
                     'seconds' => $exception->secondsUntilAvailable,
                     'minutes' => ceil($exception->secondsUntilAvailable / 60),
                 ]),
-            );
-
-            return;
+            ]);
         }
 
         $data = $this->form->getState();
@@ -46,9 +45,9 @@ class Login extends FilamentLogin
         try {
             $user = $auth->validateCredentials(Arr::only($data, ['email', 'password']));
         } catch (UserNotFoundException $exception) {
-            $this->addError('email', $exception->getMessage());
-
-            return;
+            throw ValidationException::withMessages([
+                'email' => $exception->getMessage(),
+            ]);
         }
 
         if (Feature::enabled(Feature::TWO_FACTOR)) {
@@ -70,7 +69,7 @@ class Login extends FilamentLogin
     public function render(): View
     {
         return view('filament-access-control::login')
-            ->layout('filament::components.layouts.base', [
+            ->layout('filament::components.layouts.card', [
                 'title' => __('filament::login.title'),
             ]);
     }

@@ -1,10 +1,4 @@
-<x-filament-access-control::auth-page action="verify">
-    <div>
-        <h2 class="font-bold tracking-tight text-center text-2xl">
-            {{ __('filament-access-control::default.pages.two_factor') }}
-        </h2>
-    </div>
-
+<form wire:submit.prevent="verify" class="space-y-8">
     <p>{{ __('filament-access-control::default.messages.enter_code') }}</p>
 
     {{ $this->form }}
@@ -18,4 +12,4 @@
             {{ __('filament-access-control::default.buttons.back_to_login') }}
         </a>
     </div>
-</x-filament-access-control::auth-page>
+</form>

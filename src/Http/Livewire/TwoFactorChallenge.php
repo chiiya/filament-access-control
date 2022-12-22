@@ -59,7 +59,7 @@ class TwoFactorChallenge extends Component implements HasForms
     public function render(): View
     {
         return view('filament-access-control::two-factor')
-            ->layout('filament::components.layouts.base', [
+            ->layout('filament::components.layouts.card', [
                 'title' => __('filament-access-control::default.pages.two_factor'),
             ]);
     }

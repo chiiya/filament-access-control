@@ -10,9 +10,11 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class ResetPassword extends Component implements HasForms
@@ -34,7 +36,7 @@ class ResetPassword extends Component implements HasForms
         $this->form->fill();
     }
 
-    public function submit()
+    public function submit(): RedirectResponse
     {
         $data = $this->form->getState();
 
@@ -57,17 +59,20 @@ class ResetPassword extends Component implements HasForms
         if ($response === Password::PASSWORD_RESET) {
             Notification::make()->title(__('passwords.reset'))->success()->send();
 
-            return redirect(route('filament.auth.login', [
+            return redirect()->route('filament.auth.login', [
                 'email' => $this->email,
-            ]));
+            ]);
         }
-        $this->addError('password', __($response));
+
+        throw ValidationException::withMessages([
+            'password' => __($response),
+        ]);
     }
 
     public function render(): View
     {
         return view('filament-access-control::password.reset')
-            ->layout('filament::components.layouts.base', [
+            ->layout('filament::components.layouts.card', [
                 'title' => __('filament-access-control::default.pages.reset_password'),
             ]);
     }

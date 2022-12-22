@@ -10,6 +10,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 /**
@@ -39,14 +40,16 @@ class ForgotPassword extends Component implements HasForms
         if ($response === Password::RESET_LINK_SENT) {
             Notification::make()->title(__('passwords.sent'))->success()->send();
         } else {
-            $this->addError('email', __($response));
+            throw ValidationException::withMessages([
+                'email' => __($response),
+            ]);
         }
     }
 
     public function render(): View
     {
         return view('filament-access-control::password.request')
-            ->layout('filament::components.layouts.base', [
+            ->layout('filament::components.layouts.card', [
                 'title' => __('filament-access-control::default.pages.reset_password'),
             ]);
     }

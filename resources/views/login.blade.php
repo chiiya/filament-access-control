@@ -1,10 +1,4 @@
-<x-filament-access-control::auth-page action="login">
-    <div>
-        <h2 class="font-bold tracking-tight text-center text-2xl">
-            {{ __('filament::login.heading') }}
-        </h2>
-    </div>
-
+<form wire:submit.prevent="login" class="space-y-8">
     {{ $this->form }}
 
     <x-filament::button type="submit" form="login" class="w-full">
@@ -16,4 +10,4 @@
             {{ __('filament-access-control::default.buttons.forgot_password') }}
         </a>
     </div>
-</x-filament-access-control::auth-page>
+</form>
