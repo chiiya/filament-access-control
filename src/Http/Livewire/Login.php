@@ -10,7 +10,6 @@ use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Http\Livewire\Auth\Login as FilamentLogin;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
@@ -27,7 +26,7 @@ class Login extends FilamentLogin
         }
     }
 
-    public function login(AuthService $auth): RedirectResponse
+    public function login(AuthService $auth)
     {
         try {
             $this->rateLimit(5);

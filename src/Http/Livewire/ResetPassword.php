@@ -10,7 +10,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -36,7 +35,7 @@ class ResetPassword extends Component implements HasForms
         $this->form->fill();
     }
 
-    public function submit(): RedirectResponse
+    public function submit()
     {
         $data = $this->form->getState();
 
