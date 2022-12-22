@@ -165,4 +165,14 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     {
         return $this->two_factor_expires_at instanceof Carbon && now()->gt($this->two_factor_expires_at);
     }
+
+    /**
+     * Return a name.
+     *
+     * Needed for compatibility with filament-logger.
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->getFilamentName();
+    }
 }

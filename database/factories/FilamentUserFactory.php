@@ -20,7 +20,7 @@ class FilamentUserFactory extends Factory
         ];
 
         if (Feature::enabled(Feature::ACCOUNT_EXPIRY)) {
-            $values = array_merge($values, [
+            return array_merge($values, [
                 'expires_at' => $this->faker->dateTimeBetween('+3 weeks', '+6 months'),
             ]);
         }
