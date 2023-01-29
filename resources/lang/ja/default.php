@@ -25,7 +25,7 @@ return [
         'roles' => 'ロール',
         'permission' => 'パーミッション',
         'permissions' => 'パーミッション',
-        'group' => '管理者  ',
+        'group' => '管理者',
     ],
     'sections' => [
         'permissions' => 'パーミッション',
