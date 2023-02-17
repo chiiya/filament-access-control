@@ -2,6 +2,19 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v1.7.0 - 2023-02-17
+
+### What's Changed
+
+- Laravel 10 Support by @bashgeek in https://github.com/chiiya/filament-access-control/pull/29
+- Add japanese translations
+
+### New Contributors
+
+- @bashgeek made their first contribution in https://github.com/chiiya/filament-access-control/pull/29
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/1.6.0...1.7.0
+
 ## v1.6.0 - 2022-12-22
 
 ### What's Changed
