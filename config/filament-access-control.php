@@ -18,7 +18,7 @@ return [
     |--------------------------------------------------------------------------
     | Password Rules
     |--------------------------------------------------------------------------
-    | Rules for the password set during the passwort reset flow.
+    | Rules for the password set during the password reset flow.
     */
     'password_rules' => ['min:8'],
 
@@ -26,7 +26,7 @@ return [
     |--------------------------------------------------------------------------
     | Password Hint
     |--------------------------------------------------------------------------
-    | Helper text displayed when setting a new password on the passwort-reset
+    | Helper text displayed when setting a new password on the password-reset
     | page. Useful for hinting at complex password requirements.
     */
     'password_hint' => null,
