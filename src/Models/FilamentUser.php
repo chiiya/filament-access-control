@@ -91,7 +91,7 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
      */
     public function isExpired(): bool
     {
-        return $this->expires_at !== null && now()->gt($this->expires_at);
+        return $this->expires_at instanceof \Illuminate\Support\Carbon && now()->gt($this->expires_at);
     }
 
     /**
