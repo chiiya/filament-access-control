@@ -2,6 +2,14 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v1.7.1 - 2023-05-16
+
+### What's Changed
+
+- Fix role select not working correctly when creating a new user
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/1.7.0...1.7.1
+
 ## v1.7.0 - 2023-02-17
 
 ### What's Changed
