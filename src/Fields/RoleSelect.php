@@ -4,31 +4,15 @@ namespace Chiiya\FilamentAccessControl\Fields;
 
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Permission\Models\Role;
 
 class RoleSelect extends Select
 {
-    public function getRelationship(): BelongsToMany
-    {
-        $model = $this->getModelInstance();
-
-        if (! $model instanceof Model) {
-            $class = $this->getModel();
-            $model = new $class;
-        }
-
-        return $model->roles();
-    }
-
-    public function saveRelationships(): void
-    {
-        $this->getRelationship()->sync($this->getState() !== null ? [$this->getState()] : []);
-    }
-
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->relationship = 'roles';
 
         $this->afterStateHydrated(function (self $component): void {
             $relationship = $component->getRelationship();
@@ -50,6 +34,10 @@ class RoleSelect extends Select
                 ->all(),
         );
 
-        $this->dehydrated(false);
+        $this->saveRelationshipsUsing(static function (Select $component, Model $record, $state): void {
+            $component->getRelationship()->sync(($state !== null) ? [$state] : []);
+        });
+
+        $this->dehydrated(true);
     }
 }
