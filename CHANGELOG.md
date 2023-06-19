@@ -2,6 +2,14 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v1.8.1 - 2023-06-19
+
+### What's Changed
+
+- Allow customizing the user model. See [here](https://github.com/chiiya/filament-access-control#custom-user-model) for more details
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/1.7.1...1.8.1
+
 ## v1.7.1 - 2023-05-16
 
 ### What's Changed
