@@ -3,10 +3,10 @@
 namespace Chiiya\FilamentAccessControl\Resources;
 
 use Carbon\Carbon;
+use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use Chiiya\FilamentAccessControl\Fields\PermissionGroup;
 use Chiiya\FilamentAccessControl\Fields\RoleSelect;
-use Chiiya\FilamentAccessControl\Models\FilamentUser;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\CreateFilamentUser;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\EditFilamentUser;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\ListFilamentUsers;
@@ -19,7 +19,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,7 +27,6 @@ use Livewire\Component;
 
 class FilamentUserResource extends Resource
 {
-    protected static ?string $model = FilamentUser::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
@@ -37,28 +36,32 @@ class FilamentUserResource extends Resource
                 Grid::make()
                     ->schema(
                         fn (Component $livewire) => $livewire instanceof ViewFilamentUser
-                    ? [
-                        self::detailsSection(),
-                        Section::make(__('filament-access-control::default.sections.permissions'))
-                            ->description(__('filament-access-control::default.messages.permissions_view'))
-                            ->schema([
-                                PermissionGroup::make('permissions')
-                                    ->label(__('filament-access-control::default.fields.permissions'))
-                                    ->validationAttribute(__('filament-access-control::default.fields.permissions'))
-                                    ->resolveStateUsing(
-                                        fn (FilamentUser $record) => $record->getAllPermissions()->pluck('id')->all(),
-                                    ),
-                            ]),
-                    ] : [
-                        self::detailsSection(),
-                        Section::make(__('filament-access-control::default.sections.permissions'))
-                            ->description(__('filament-access-control::default.messages.permissions_create'))
-                            ->schema([
-                                PermissionGroup::make('permissions')
-                                    ->label(__('filament-access-control::default.fields.permissions'))
-                                    ->validationAttribute(__('filament-access-control::default.fields.permissions')),
-                            ]),
-                    ],
+                            ? [
+                                self::detailsSection(),
+                                Section::make(__('filament-access-control::default.sections.permissions'))
+                                    ->description(__('filament-access-control::default.messages.permissions_view'))
+                                    ->schema([
+                                        PermissionGroup::make('permissions')
+                                            ->label(__('filament-access-control::default.fields.permissions'))
+                                            ->validationAttribute(
+                                                __('filament-access-control::default.fields.permissions'),
+                                            )
+                                            ->resolveStateUsing(
+                                                fn ($record) => $record->getAllPermissions()->pluck('id')->all(),
+                                            ),
+                                    ]),
+                            ] : [
+                                self::detailsSection(),
+                                Section::make(__('filament-access-control::default.sections.permissions'))
+                                    ->description(__('filament-access-control::default.messages.permissions_create'))
+                                    ->schema([
+                                        PermissionGroup::make('permissions')
+                                            ->label(__('filament-access-control::default.fields.permissions'))
+                                            ->validationAttribute(
+                                                __('filament-access-control::default.fields.permissions'),
+                                            ),
+                                    ]),
+                            ],
                     )
                     ->columns(1),
             );
@@ -76,44 +79,45 @@ class FilamentUserResource extends Resource
                     ->searchable(),
                 TextColumn::make('role')
                     ->label(__('filament-access-control::default.fields.role'))
-                    ->getStateUsing(fn (FilamentUser $record) => __(optional($record->roles->first())->name)),
+                    ->getStateUsing(fn ($record) => __(optional($record->roles->first())->name)),
                 ...(
                     Feature::enabled(Feature::ACCOUNT_EXPIRY)
-                    ? [
-                        BooleanColumn::make('active')
-                            ->label(__('filament-access-control::default.fields.active'))
-                            ->getStateUsing(fn (FilamentUser $record) => ! $record->isExpired()),
-                    ]
-                    : []
+                        ? [
+                            IconColumn::make('active')
+                                ->boolean()
+                                ->label(__('filament-access-control::default.fields.active'))
+                                ->getStateUsing(fn (AccessControlUser $record) => ! $record->isExpired()),
+                        ]
+                        : []
                 ),
             ])
             ->prependBulkActions([
                 ...(
                     Feature::enabled(Feature::ACCOUNT_EXPIRY)
-                    ? [
-                        BulkAction::make('extend')
-                            ->label(__('filament-access-control::default.actions.extend'))
-                            ->action('extendUsers')
-                            ->requiresConfirmation()
-                            ->deselectRecordsAfterCompletion()
-                            ->color('success')
-                            ->icon('heroicon-o-clock'),
-                    ]
-                    : []
+                        ? [
+                            BulkAction::make('extend')
+                                ->label(__('filament-access-control::default.actions.extend'))
+                                ->action('extendUsers')
+                                ->requiresConfirmation()
+                                ->deselectRecordsAfterCompletion()
+                                ->color('success')
+                                ->icon('heroicon-o-clock'),
+                        ]
+                        : []
                 ),
             ])
             ->filters([
                 ...(
                     Feature::enabled(Feature::ACCOUNT_EXPIRY)
-                    ? [
-                        Filter::make(__('filament-access-control::default.filters.expired'))
-                            ->query(
-                                fn (Builder $query) => $query->whereNotNull(
-                                    'expires_at',
-                                )->where('expires_at', '<=', now()),
-                            ),
-                    ]
-                    : []
+                        ? [
+                            Filter::make(__('filament-access-control::default.filters.expired'))
+                                ->query(
+                                    fn (Builder $query) => $query->whereNotNull(
+                                        'expires_at',
+                                    )->where('expires_at', '<=', now()),
+                                ),
+                        ]
+                        : []
                 ),
             ]);
     }
@@ -126,6 +130,11 @@ class FilamentUserResource extends Resource
             'edit' => EditFilamentUser::route('/{record}/edit'),
             'view' => ViewFilamentUser::route('/{record}'),
         ];
+    }
+
+    public static function getModel(): string
+    {
+        return config('filament-access-control.user_model');
     }
 
     public static function getLabel(): string
@@ -170,15 +179,17 @@ class FilamentUserResource extends Resource
                     ->validationAttribute(__('filament-access-control::default.fields.role')),
                 ...(
                     Feature::enabled(Feature::ACCOUNT_EXPIRY)
-                    ? [
-                        DatePicker::make('expires_at')
-                            ->label(__('filament-access-control::default.fields.expires_at'))
-                            ->validationAttribute(__('filament-access-control::default.fields.expires_at'))
-                            ->minDate(fn (Component $livewire) => self::evaluateMinDate($livewire))
-                            ->displayFormat(config('filament-access-control.date_format'))
-                            ->dehydrateStateUsing(fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString()),
-                    ]
-                    : []
+                        ? [
+                            DatePicker::make('expires_at')
+                                ->label(__('filament-access-control::default.fields.expires_at'))
+                                ->validationAttribute(__('filament-access-control::default.fields.expires_at'))
+                                ->minDate(fn (Component $livewire) => self::evaluateMinDate($livewire))
+                                ->displayFormat(config('filament-access-control.date_format'))
+                                ->dehydrateStateUsing(
+                                    fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString(),
+                                ),
+                        ]
+                        : []
                 ),
             ]);
     }

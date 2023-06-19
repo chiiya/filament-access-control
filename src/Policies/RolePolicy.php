@@ -3,41 +3,41 @@
 namespace Chiiya\FilamentAccessControl\Policies;
 
 use Chiiya\FilamentAccessControl\Enumerators\PermissionName;
-use Chiiya\FilamentAccessControl\Models\FilamentUser;
+use Illuminate\Contracts\Auth\Access\Authorizable;
 
 class RolePolicy
 {
-    public function viewAny(FilamentUser $user): bool
+    public function viewAny(Authorizable $user): bool
     {
         return $user->can(PermissionName::UPDATE_PERMISSIONS);
     }
 
-    public function view(FilamentUser $user): bool
+    public function view(Authorizable $user): bool
     {
         return $user->can(PermissionName::UPDATE_PERMISSIONS);
     }
 
-    public function create(FilamentUser $user): bool
+    public function create(Authorizable $user): bool
     {
         return $user->can(PermissionName::UPDATE_PERMISSIONS);
     }
 
-    public function update(FilamentUser $user): bool
+    public function update(Authorizable $user): bool
     {
         return $user->can(PermissionName::UPDATE_PERMISSIONS);
     }
 
-    public function delete(FilamentUser $user): bool
+    public function delete(Authorizable $user): bool
     {
         return $user->can(PermissionName::UPDATE_PERMISSIONS);
     }
 
-    public function restore(FilamentUser $user): bool
+    public function restore(Authorizable $user): bool
     {
         return $user->can(PermissionName::UPDATE_PERMISSIONS);
     }
 
-    public function forceDelete(FilamentUser $user): bool
+    public function forceDelete(Authorizable $user): bool
     {
         return $user->can(PermissionName::UPDATE_PERMISSIONS);
     }

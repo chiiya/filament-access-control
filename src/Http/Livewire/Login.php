@@ -3,6 +3,7 @@
 namespace Chiiya\FilamentAccessControl\Http\Livewire;
 
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
+use Chiiya\FilamentAccessControl\Exceptions\InvalidUserModelException;
 use Chiiya\FilamentAccessControl\Exceptions\UserNotFoundException;
 use Chiiya\FilamentAccessControl\Notifications\TwoFactorCode;
 use Chiiya\FilamentAccessControl\Services\AuthService;
@@ -26,6 +27,9 @@ class Login extends FilamentLogin
         }
     }
 
+    /**
+     * @throws InvalidUserModelException
+     */
     public function login(AuthService $auth)
     {
         try {

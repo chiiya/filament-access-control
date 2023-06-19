@@ -3,9 +3,11 @@
 namespace Chiiya\FilamentAccessControl\Models;
 
 use Carbon\Carbon;
+use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
 use Chiiya\FilamentAccessControl\Database\Factories\FilamentUserFactory;
 use Chiiya\FilamentAccessControl\Enumerators\RoleName;
 use Chiiya\FilamentAccessControl\Notifications\ResetPassword;
+use Chiiya\FilamentAccessControl\Notifications\TwoFactorCode;
 use Filament\Models\Contracts\FilamentUser as FilamentUserInterface;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,7 +51,7 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @mixin \Eloquent
  */
-class FilamentUser extends Authenticatable implements FilamentUserInterface, HasName
+class FilamentUser extends Authenticatable implements AccessControlUser, FilamentUserInterface, HasName
 {
     use HasFactory;
     use HasRoles;
@@ -84,14 +86,6 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     protected static function newFactory(): FilamentUserFactory
     {
         return FilamentUserFactory::new();
-    }
-
-    /**
-     * Check whether the account is expired.
-     */
-    public function isExpired(): bool
-    {
-        return $this->expires_at instanceof \Illuminate\Support\Carbon && now()->gt($this->expires_at);
     }
 
     /**
@@ -131,6 +125,16 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     }
 
     /**
+     * Return a name.
+     *
+     * Needed for compatibility with filament-logger.
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->getFilamentName();
+    }
+
+    /**
      * Send the password reset notification.
      *
      * @param string $token
@@ -141,7 +145,15 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     }
 
     /**
-     * Extend the expiry date.
+     * {@inheritDoc}
+     */
+    public function isExpired(): bool
+    {
+        return $this->expires_at instanceof \Illuminate\Support\Carbon && now()->gt($this->expires_at);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function extend(): void
     {
@@ -151,15 +163,23 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     }
 
     /**
-     * Has a two-factor code already been created?
+     * {@inheritDoc}
      */
     public function hasTwoFactorCode(): bool
     {
-        return $this->two_factor_code !== null;
+        return $this->getTwoFactorCode() !== null;
     }
 
     /**
-     * Has the two-factor authentication code expired?
+     * {@inheritDoc}
+     */
+    public function getTwoFactorCode(): ?string
+    {
+        return $this->two_factor_code;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function twoFactorCodeIsExpired(): bool
     {
@@ -167,12 +187,10 @@ class FilamentUser extends Authenticatable implements FilamentUserInterface, Has
     }
 
     /**
-     * Return a name.
-     *
-     * Needed for compatibility with filament-logger.
+     * {@inheritDoc}
      */
-    public function getNameAttribute(): string
+    public function sendTwoFactorCodeNotification(): void
     {
-        return $this->getFilamentName();
+        $this->notify(new TwoFactorCode);
     }
 }

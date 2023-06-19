@@ -2,7 +2,6 @@
 
 namespace Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages;
 
-use Chiiya\FilamentAccessControl\Models\FilamentUser;
 use Chiiya\FilamentAccessControl\Notifications\SetPassword;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
 use Filament\Resources\Pages\CreateRecord;
@@ -17,11 +16,6 @@ class CreateFilamentUser extends CreateRecord
     public function afterCreate(): void
     {
         $user = $this->record;
-
-        if (! $user instanceof FilamentUser) {
-            return;
-        }
-
         $token = Password::broker('filament')->createToken($user);
         $user->notify(new SetPassword($token));
 

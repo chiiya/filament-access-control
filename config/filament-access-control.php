@@ -1,5 +1,6 @@
 <?php
 
+use Chiiya\FilamentAccessControl\Models\FilamentUser;
 return [
     /*
     |--------------------------------------------------------------------------
@@ -38,4 +39,12 @@ return [
     | Display format for datepicker
     */
     'date_format' => 'd.m.Y',
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Model
+    |--------------------------------------------------------------------------
+    | User model used for admin access and management.
+    */
+    'user_model' => FilamentUser::class,
 ];

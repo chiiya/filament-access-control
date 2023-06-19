@@ -2,7 +2,6 @@
 
 namespace Chiiya\FilamentAccessControl\Http\Livewire;
 
-use Chiiya\FilamentAccessControl\Models\FilamentUser;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -47,7 +46,7 @@ class ResetPassword extends Component implements HasForms
 
         $response = Password::broker('filament')->reset(
             $credentials,
-            function (FilamentUser $user, string $password): void {
+            function ($user, string $password): void {
                 $user->password = Hash::make($password);
                 $user->setRememberToken(Str::random(60));
                 $user->save();

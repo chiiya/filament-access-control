@@ -4,8 +4,7 @@ namespace Chiiya\FilamentAccessControl\Commands;
 
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use Chiiya\FilamentAccessControl\Enumerators\RoleName;
-use Chiiya\FilamentAccessControl\Models\FilamentUser;
-use Filament\Commands\Concerns\CanValidateInput;
+use Filament\Support\Commands\Concerns\CanValidateInput;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
@@ -51,7 +50,7 @@ class CreateFilamentUser extends Command
             ]);
         }
 
-        $user = FilamentUser::query()->create($values);
+        $user = config('filament-access-control.user_model')::query()->create($values);
         $user->assignRole(RoleName::SUPER_ADMIN);
         $user->save();
         $loginUrl = route('filament.auth.login');

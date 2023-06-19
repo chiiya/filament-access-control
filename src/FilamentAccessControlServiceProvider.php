@@ -55,7 +55,7 @@ class FilamentAccessControlServiceProvider extends PluginServiceProvider
         Livewire::component(ResetPassword::getName(), ResetPassword::class);
         Livewire::component(AccountExpired::getName(), AccountExpired::class);
         Livewire::component(TwoFactorChallenge::getName(), TwoFactorChallenge::class);
-        Gate::policy(FilamentUser::class, FilamentUserPolicy::class);
+        Gate::policy(config('filament-access-control.user_model'), FilamentUserPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Permission::class, PermissionPolicy::class);
     }
