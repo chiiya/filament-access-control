@@ -86,7 +86,7 @@ class FilamentAccessControlServiceProvider extends PluginServiceProvider
         $this->mergeConfig([
             'filament_users' => [
                 'driver' => 'eloquent',
-                'model' => FilamentUser::class,
+                'model' => $this->app['config']->get('filament-access-control.user_model', FilamentUser::class),
             ],
         ], 'auth.providers');
     }

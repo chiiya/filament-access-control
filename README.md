@@ -163,6 +163,36 @@ flag in the config file:
 ],
 ```
 
+### Custom User Model
+To use your own custom user model for the admin (instead of `Chiiya\FilamentAccessControl\Models\FilamentUser`),
+point the value of `user_model` in the `filament-access-control` config file to your own model.
+
+```php
+'user_model' => CustomFilamentUser::class,
+```
+
+Please make sure that your model either extends the `FilamentUser` base case or implements the 
+`Chiiya\FilamentAccessControl\Contracts\AccessControlUser` interface.
+
+```php
+use Chiiya\FilamentAccessControl\Models\FilamentUser;
+use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
+use Filament\Models\Contracts\FilamentUser as FilamentUserInterface;
+use Filament\Models\Contracts\HasName;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class CustomFilamentUser extends FilamentUser
+{
+    // ...
+}
+
+// Or alternatively
+class CustomFilamentUser extends Authenticatable implements AccessControlUser, FilamentUserInterface, HasName
+{
+    // ...
+}
+```
+
 ## Screenshots
 ![Screenshot of Admin Users - View](./art/admin_users_view.png)
 ![Screenshot of Roles - Edit](./art/roles_edit.png)
