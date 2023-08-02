@@ -11,7 +11,6 @@ Opinionated setup for managing admin users, roles and permissions within [Larave
 ## Features
 - Separate database table for filament admin users (separate model, separate guard, separate password broker)
 - Uses [spatie/laravel-permission](https://github.com/spatie/laravel-permission) for roles and permissions
-- Adds the missing password reset flow to Filament
 - Fully localized
 - CRUD resources for admin users, roles and permissions
 - Admin users _may_ belong to **one** role
@@ -39,9 +38,9 @@ composer require chiiya/filament-access-control
 ],
 ```
 
-3. Publish the migrations and config, then run the migrations. Make sure you also publish 
-and run the [spatie/laravel-permission](https://github.com/spatie/laravel-permission) migrations
-if you haven't done so yet.
+3. Publish the migrations and config, then run the migrations. Make sure you also publish
+   and run the [spatie/laravel-permission](https://github.com/spatie/laravel-permission) migrations
+   if you haven't done so yet.
 
 ```bash
 php artisan vendor:publish --tag="filament-access-control-migrations"
@@ -51,11 +50,11 @@ php artisan migrate
 ```
 
 4. To seed the necessary base data (role & permissions), run `php artisan filament-access-control:install`
-or call the `Chiiya\FilamentAccessControl\Database\Seeders\FilamentAccessControlSeeder` seeder in your database seeder.
+   or call the `Chiiya\FilamentAccessControl\Database\Seeders\FilamentAccessControlSeeder` seeder in your database seeder.
 
 5. Create an admin user using `php artisan filament-access-control:user`. If you create users programmatically
-(e.g. in your database seeder), make sure to assign them the `super-admin` role if you want them to be able to 
-access the role and user management.
+   (e.g. in your database seeder), make sure to assign them the `super-admin` role if you want them to be able to
+   access the role and user management.
 
 Optionally, you can publish the translations with:
 
@@ -74,7 +73,7 @@ php artisan vendor:publish --tag="filament-access-control-views"
 ### Authorizing Resources, Pages & Actions
 
 #### Authorizing Resources
-To authorize access to resources, use policies as described in the 
+To authorize access to resources, use policies as described in the
 [Filament documentation](https://filamentphp.com/docs/2.x/admin/resources#authorization).
 
 ```php
@@ -129,8 +128,8 @@ adding a JSON translation entry for the given role or permission name (e.g. `lan
 ```
 
 ### Feature: Account Expiry
-With the optional account expiry feature, all accounts require an expiration date. When 
-accounts are expired, they can no longer log in. To enable the account expiry feature, 
+With the optional account expiry feature, all accounts require an expiration date. When
+accounts are expired, they can no longer log in. To enable the account expiry feature,
 enable the feature flag in the config file:
 
 ```php
@@ -171,7 +170,7 @@ point the value of `user_model` in the `filament-access-control` config file to 
 'user_model' => CustomFilamentUser::class,
 ```
 
-Please make sure that your model either extends the `FilamentUser` base case or implements the 
+Please make sure that your model either extends the `FilamentUser` base case or implements the
 `Chiiya\FilamentAccessControl\Contracts\AccessControlUser` interface.
 
 ```php
@@ -196,7 +195,6 @@ class CustomFilamentUser extends Authenticatable implements AccessControlUser, F
 ## Screenshots
 ![Screenshot of Admin Users - View](./art/admin_users_view.png)
 ![Screenshot of Roles - Edit](./art/roles_edit.png)
-![Screenshot of Reset Password](./art/reset_password.png)
 ![Screenshot of Account Expired](./art/account_expired.png)
 ![Screenshot of Two-Factor Authentication](./art/two_factor.png)
 

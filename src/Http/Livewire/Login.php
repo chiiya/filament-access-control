@@ -8,14 +8,16 @@ use Chiiya\FilamentAccessControl\Exceptions\UserNotFoundException;
 use Chiiya\FilamentAccessControl\Notifications\TwoFactorCode;
 use Chiiya\FilamentAccessControl\Services\AuthService;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
-use Filament\Http\Livewire\Auth\Login as FilamentLogin;
-use Illuminate\Contracts\View\View;
+use Filament\Pages\Auth\Login as FilamentLogin;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
 class Login extends FilamentLogin
 {
+    protected static string $view = 'filament-access-control::login';
+
     public function mount(): void
     {
         parent::mount();
@@ -36,7 +38,7 @@ class Login extends FilamentLogin
             $this->rateLimit(5);
         } catch (TooManyRequestsException $exception) {
             throw ValidationException::withMessages([
-                'email' => __('filament::login.messages.throttled', [
+                'data.email' => __('filament-panels::pages/auth/login.notifications.throttled.title', [
                     'seconds' => $exception->secondsUntilAvailable,
                     'minutes' => ceil($exception->secondsUntilAvailable / 60),
                 ]),
@@ -49,7 +51,7 @@ class Login extends FilamentLogin
             $user = $auth->validateCredentials(Arr::only($data, ['email', 'password']));
         } catch (UserNotFoundException $exception) {
             throw ValidationException::withMessages([
-                'email' => $exception->getMessage(),
+                'data.email' => $exception->getMessage(),
             ]);
         }
 
@@ -61,7 +63,9 @@ class Login extends FilamentLogin
             session()->put('filament.id', $user->getKey());
             session()->put('filament.remember', $data['remember']);
 
-            return redirect()->route('filament.account.two-factor');
+            $panel ??= Filament::getCurrentPanel()->getId();
+
+            return redirect()->route("filament.{$panel}.account.two-factor");
         }
 
         $auth->login($user, $data['remember']);
@@ -69,11 +73,10 @@ class Login extends FilamentLogin
         return redirect()->intended(Filament::getUrl());
     }
 
-    public function render(): View
+    protected function getAuthenticateFormAction(): Action
     {
-        return view('filament-access-control::login')
-            ->layout('filament::components.layouts.card', [
-                'title' => __('filament::login.title'),
-            ]);
+        return Action::make('login')
+            ->label(__('filament-panels::pages/auth/login.form.actions.authenticate.label'))
+            ->submit('login');
     }
 }

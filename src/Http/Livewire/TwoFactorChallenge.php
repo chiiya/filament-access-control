@@ -5,21 +5,22 @@ namespace Chiiya\FilamentAccessControl\Http\Livewire;
 use Chiiya\FilamentAccessControl\Exceptions\InvalidCodeException;
 use Chiiya\FilamentAccessControl\Exceptions\UserNotFoundException;
 use Chiiya\FilamentAccessControl\Services\AuthService;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
-use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Filament\Pages\Concerns\InteractsWithFormActions;
+use Filament\Pages\SimplePage;
+use Illuminate\Contracts\Support\Htmlable;
 
 /**
- * @property ComponentContainer $form
+ * @property Form $form
  */
-class TwoFactorChallenge extends Component implements HasForms
+class TwoFactorChallenge extends SimplePage
 {
-    use InteractsWithForms;
+    use InteractsWithFormActions;
+    protected static string $view = 'filament-access-control::two-factor';
     public ?string $code = '';
 
     public function mount(AuthService $auth)
@@ -30,8 +31,9 @@ class TwoFactorChallenge extends Component implements HasForms
 
         if (! $auth->hasChallengedUser()) {
             Notification::make()->title(__('filament-access-control::default.messages.invalid_user'))->danger()->send();
+            $panel ??= Filament::getCurrentPanel()->getId();
 
-            return redirect()->route('filament.auth.login');
+            return redirect()->route("filament.{$panel}.auth.login");
         }
 
         $this->form->fill();
@@ -45,8 +47,9 @@ class TwoFactorChallenge extends Component implements HasForms
             $auth->performTwoFactorChallenge($data['code']);
         } catch (UserNotFoundException $exception) {
             Notification::make()->title($exception->getMessage())->danger()->send();
+            $panel ??= Filament::getCurrentPanel()->getId();
 
-            return redirect()->route('filament.auth.login');
+            return redirect()->route("filament.{$panel}.auth.login");
         } catch (InvalidCodeException $exception) {
             $this->addError('code', $exception->getMessage());
 
@@ -56,12 +59,9 @@ class TwoFactorChallenge extends Component implements HasForms
         return redirect()->intended(Filament::getUrl());
     }
 
-    public function render(): View
+    public function getTitle(): string|Htmlable
     {
-        return view('filament-access-control::two-factor')
-            ->layout('filament::components.layouts.card', [
-                'title' => __('filament-access-control::default.pages.two_factor'),
-            ]);
+        return __('filament-access-control::default.pages.two_factor');
     }
 
     protected function getFormSchema(): array
@@ -72,5 +72,19 @@ class TwoFactorChallenge extends Component implements HasForms
                 ->validationAttribute(__('filament-access-control::default.fields.code'))
                 ->required(),
         ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('verify')
+                ->label(__('filament-access-control::default.buttons.submit'))
+                ->submit('verify'),
+        ];
+    }
+
+    protected function hasFullWidthFormActions(): bool
+    {
+        return true;
     }
 }

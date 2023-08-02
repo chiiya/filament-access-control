@@ -3,6 +3,7 @@
 namespace Chiiya\FilamentAccessControl\Resources\RoleResource\Pages;
 
 use Chiiya\FilamentAccessControl\Resources\RoleResource;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -18,5 +19,10 @@ class EditRole extends EditRecord
         }
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [DeleteAction::make()];
     }
 }

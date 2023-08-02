@@ -2,16 +2,9 @@
 
 namespace Chiiya\FilamentAccessControl\Http\Livewire;
 
-use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Filament\Pages\SimplePage;
 
-class AccountExpired extends Component
+class AccountExpired extends SimplePage
 {
-    public function render(): View
-    {
-        return view('filament-access-control::expired')
-            ->layout('filament::components.layouts.card', [
-                'title' => __('filament-access-control::default.pages.account_expired'),
-            ]);
-    }
+    protected static string $view = 'filament-access-control::expired';
 }

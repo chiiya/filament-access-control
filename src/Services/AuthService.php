@@ -25,7 +25,7 @@ class AuthService
         $user = $this->getUserModel()->newQuery()->where('email', '=', $credentials['email'])->first();
 
         if ($user === null) {
-            throw new UserNotFoundException(__('filament::login.messages.failed'));
+            throw new UserNotFoundException(__('filament-panels::pages/auth/login.messages.failed'));
         }
 
         if (! $user instanceof AccessControlUser) {
@@ -33,7 +33,7 @@ class AuthService
         }
 
         if (! Filament::auth()->validate($credentials)) {
-            throw new UserNotFoundException(__('filament::login.messages.failed'));
+            throw new UserNotFoundException(__('filament-panels::pages/auth/login.messages.failed'));
         }
 
         return $user;

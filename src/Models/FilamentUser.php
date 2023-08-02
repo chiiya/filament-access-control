@@ -6,10 +6,10 @@ use Carbon\Carbon;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
 use Chiiya\FilamentAccessControl\Database\Factories\FilamentUserFactory;
 use Chiiya\FilamentAccessControl\Enumerators\RoleName;
-use Chiiya\FilamentAccessControl\Notifications\ResetPassword;
 use Chiiya\FilamentAccessControl\Notifications\TwoFactorCode;
 use Filament\Models\Contracts\FilamentUser as FilamentUserInterface;
 use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -114,7 +114,7 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
         return $name;
     }
 
-    public function canAccessFilament(): bool
+    public function canAccessPanel(Panel $panel): bool
     {
         return true;
     }
@@ -132,16 +132,6 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
     public function getNameAttribute(): string
     {
         return $this->getFilamentName();
-    }
-
-    /**
-     * Send the password reset notification.
-     *
-     * @param string $token
-     */
-    public function sendPasswordResetNotification($token): void
-    {
-        $this->notify(new ResetPassword($token));
     }
 
     /**

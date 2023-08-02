@@ -4,6 +4,7 @@ namespace Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages;
 
 use Chiiya\FilamentAccessControl\Notifications\SetPassword;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
+use Filament\Facades\Filament;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -17,7 +18,9 @@ class CreateFilamentUser extends CreateRecord
     {
         $user = $this->record;
         $token = Password::broker('filament')->createToken($user);
-        $user->notify(new SetPassword($token));
+        $url = Filament::getResetPasswordUrl($token, $user);
+        $requestUrl = Filament::getRequestPasswordResetUrl();
+        $user->notify(new SetPassword($url, $requestUrl));
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
     }

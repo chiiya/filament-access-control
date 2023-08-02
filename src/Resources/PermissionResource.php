@@ -6,10 +6,13 @@ use Chiiya\FilamentAccessControl\Resources\PermissionResource\Pages\CreatePermis
 use Chiiya\FilamentAccessControl\Resources\PermissionResource\Pages\EditPermission;
 use Chiiya\FilamentAccessControl\Resources\PermissionResource\Pages\ListPermissions;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Permission\Models\Permission;
 
@@ -52,6 +55,8 @@ class PermissionResource extends Resource
                     ->label(__('filament-access-control::default.fields.created_at'))
                     ->dateTime(),
             ])
+            ->actions([EditAction::make()])
+            ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])])
             ->filters([]);
     }
 
@@ -79,7 +84,7 @@ class PermissionResource extends Resource
         return Permission::query()->where('guard_name', '=', 'filament');
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('filament-access-control::default.resources.group');
     }

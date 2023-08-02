@@ -1,6 +1,7 @@
 <?php
 
 use Chiiya\FilamentAccessControl\Models\FilamentUser;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -14,23 +15,6 @@ return [
         //        \Chiiya\FilamentAccessControl\Enumerators\Feature::ACCOUNT_EXPIRY,
         //        \Chiiya\FilamentAccessControl\Enumerators\Feature::TWO_FACTOR,
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Password Rules
-    |--------------------------------------------------------------------------
-    | Rules for the password set during the password reset flow.
-    */
-    'password_rules' => ['min:8'],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Password Hint
-    |--------------------------------------------------------------------------
-    | Helper text displayed when setting a new password on the password-reset
-    | page. Useful for hinting at complex password requirements.
-    */
-    'password_hint' => null,
 
     /*
     |--------------------------------------------------------------------------

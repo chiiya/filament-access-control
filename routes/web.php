@@ -1,17 +1,19 @@
 <?php
 
 use Chiiya\FilamentAccessControl\Http\Livewire\AccountExpired;
-use Chiiya\FilamentAccessControl\Http\Livewire\ForgotPassword;
-use Chiiya\FilamentAccessControl\Http\Livewire\ResetPassword;
 use Chiiya\FilamentAccessControl\Http\Livewire\TwoFactorChallenge;
+use Filament\Facades\Filament;
+use Illuminate\Support\Facades\Route;
 
-Route::domain(config('filament.domain'))
-    ->middleware(config('filament.middleware.base'))
-    ->prefix(config('filament.path'))
-    ->name('filament.')
-    ->group(function (): void {
-        Route::get('/password/request', ForgotPassword::class)->name('password.request');
-        Route::get('/password/reset/{token}', ResetPassword::class)->name('password.reset');
-        Route::get('/auth/expired', AccountExpired::class)->name('account.expired');
-        Route::get('/auth/two-factor', TwoFactorChallenge::class)->name('account.two-factor');
-    });
+Route::name('filament.')->group(function () {
+    foreach (Filament::getPanels() as $panel) {
+        Route::domain($panel->getDomain())
+            ->middleware($panel->getMiddleware())
+            ->name($panel->getId() . '.')
+            ->prefix($panel->getPath())
+            ->group(function () use ($panel) {
+                Route::get('/auth/expired', AccountExpired::class)->name('account.expired');
+                Route::get('/auth/two-factor', TwoFactorChallenge::class)->name('account.two-factor');
+            });
+    }
+});

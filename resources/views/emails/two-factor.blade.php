@@ -6,5 +6,5 @@
 # {{ $code }}
 
 {{ __('filament-access-control::default.notifications.salutation') }},<br>
-{{ config('filament.brand') }}
+{{ filament()->getBrandName() }}
 @endcomponent

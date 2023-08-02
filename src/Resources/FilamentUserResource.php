@@ -15,13 +15,18 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
@@ -32,7 +37,7 @@ class FilamentUserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(
+            ->schema([
                 Grid::make()
                     ->schema(
                         fn (Component $livewire) => $livewire instanceof ViewFilamentUser
@@ -64,7 +69,7 @@ class FilamentUserResource extends Resource
                             ],
                     )
                     ->columns(1),
-            );
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -91,21 +96,26 @@ class FilamentUserResource extends Resource
                         : []
                 ),
             ])
-            ->prependBulkActions([
-                ...(
-                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
-                        ? [
-                            BulkAction::make('extend')
-                                ->label(__('filament-access-control::default.actions.extend'))
-                                ->action('extendUsers')
-                                ->requiresConfirmation()
-                                ->deselectRecordsAfterCompletion()
-                                ->color('success')
-                                ->icon('heroicon-o-clock'),
-                        ]
-                        : []
-                ),
+            ->actions([EditAction::make(), ViewAction::make()])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                    ...(
+                        Feature::enabled(Feature::ACCOUNT_EXPIRY)
+                            ? [
+                                BulkAction::make('extend')
+                                    ->label(__('filament-access-control::default.actions.extend'))
+                                    ->action('extendUsers')
+                                    ->requiresConfirmation()
+                                    ->deselectRecordsAfterCompletion()
+                                    ->color('success')
+                                    ->icon('heroicon-o-clock'),
+                            ]
+                            : []
+                    ),
+                ]),
             ])
+            ->emptyStateActions([CreateAction::make()])
             ->filters([
                 ...(
                     Feature::enabled(Feature::ACCOUNT_EXPIRY)
@@ -152,7 +162,7 @@ class FilamentUserResource extends Resource
         return parent::getEloquentQuery()->with('roles');
     }
 
-    protected static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
         return __('filament-access-control::default.resources.group');
     }

@@ -4,6 +4,7 @@ namespace Chiiya\FilamentAccessControl\Http\Middleware;
 
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use Closure;
+use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
@@ -17,8 +18,9 @@ class EnsureAccountIsNotExpired
     {
         if ($request->user() && $request->user()->isExpired() && Feature::enabled(Feature::ACCOUNT_EXPIRY)) {
             auth('filament')->logout();
+            $panel ??= Filament::getCurrentPanel()->getId();
 
-            return Redirect::guest(URL::route('filament.account.expired'));
+            return Redirect::guest(URL::route("filament.{$panel}.account.expired"));
         }
 
         return $next($request);

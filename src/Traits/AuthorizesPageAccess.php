@@ -16,13 +16,13 @@ trait AuthorizesPageAccess
         return Filament::auth()->user()->can(static::getPermissionName());
     }
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return static::canView() && static::$shouldRegisterNavigation;
+    }
+
     protected static function getPermissionName(): string
     {
         return static::$permission;
-    }
-
-    protected static function shouldRegisterNavigation(): bool
-    {
-        return static::canView() && static::$shouldRegisterNavigation;
     }
 }

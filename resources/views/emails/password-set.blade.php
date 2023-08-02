@@ -7,8 +7,8 @@
 {{ __('filament-access-control::default.notifications.password_set.button') }}
 @endcomponent
 
-{{ __('filament-access-control::default.notifications.password_set.expiry', ['count' => config('auth.passwords.filament.expire'), 'url' => route('filament.password.request')]) }}
+{{ __('filament-access-control::default.notifications.password_set.expiry', ['count' => config('auth.passwords.filament.expire'), 'url' => $requestUrl]) }}
 
 {{ __('filament-access-control::default.notifications.salutation') }},<br>
-{{ config('filament.brand') }}
+{{ filament()->getBrandName() }}
 @endcomponent

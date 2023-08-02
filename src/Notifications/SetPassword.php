@@ -12,7 +12,8 @@ class SetPassword extends Notification implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        protected string $token,
+        protected string $url,
+        protected string $requestUrl,
     ) {}
 
     /**
@@ -26,26 +27,15 @@ class SetPassword extends Notification implements ShouldQueue
     /**
      * Build the mail representation of the notification.
      */
-    public function toMail(mixed $notifiable): MailMessage
+    public function toMail(): MailMessage
     {
-        return $this->buildMailMessage($this->resetUrl($notifiable));
-    }
-
-    /**
-     * Get the reset URL for the given notifiable.
-     */
-    protected function resetUrl(mixed $notifiable): string
-    {
-        return url(route('filament.password.reset', [
-            'token' => $this->token,
-            'email' => $notifiable->getEmailForPasswordReset(),
-        ], false));
+        return $this->buildMailMessage($this->url, $this->requestUrl);
     }
 
     /**
      * Get the set password notification mail message for the given URL.
      */
-    protected function buildMailMessage(string $url): MailMessage
+    protected function buildMailMessage(string $url, string $requestUrl): MailMessage
     {
         $host = parse_url(url()->to('/'))['host'];
 
@@ -55,6 +45,7 @@ class SetPassword extends Notification implements ShouldQueue
             ]))
             ->markdown('filament-access-control::emails.password-set', [
                 'url' => $url,
+                'requestUrl' => $requestUrl,
                 'host' => $host,
             ]);
     }

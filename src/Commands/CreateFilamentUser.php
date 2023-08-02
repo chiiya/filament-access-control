@@ -53,8 +53,7 @@ class CreateFilamentUser extends Command
         $user = config('filament-access-control.user_model')::query()->create($values);
         $user->assignRole(RoleName::SUPER_ADMIN);
         $user->save();
-        $loginUrl = route('filament.auth.login');
-        $this->info("Success! {$user->email} may now log in at {$loginUrl}.");
+        $this->info("Success! {$user->email} may now log in.");
 
         return self::SUCCESS;
     }

@@ -5,9 +5,7 @@ namespace Chiiya\FilamentAccessControl;
 use Chiiya\FilamentAccessControl\Commands\CreateFilamentUser;
 use Chiiya\FilamentAccessControl\Commands\Install;
 use Chiiya\FilamentAccessControl\Http\Livewire\AccountExpired;
-use Chiiya\FilamentAccessControl\Http\Livewire\ForgotPassword;
 use Chiiya\FilamentAccessControl\Http\Livewire\Login;
-use Chiiya\FilamentAccessControl\Http\Livewire\ResetPassword;
 use Chiiya\FilamentAccessControl\Http\Livewire\TwoFactorChallenge;
 use Chiiya\FilamentAccessControl\Models\FilamentUser;
 use Chiiya\FilamentAccessControl\Policies\FilamentUserPolicy;
@@ -16,14 +14,15 @@ use Chiiya\FilamentAccessControl\Policies\RolePolicy;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
 use Chiiya\FilamentAccessControl\Resources\PermissionResource;
 use Chiiya\FilamentAccessControl\Resources\RoleResource;
-use Filament\PluginServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
+use Livewire\Mechanisms\ComponentRegistry;
 use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class FilamentAccessControlServiceProvider extends PluginServiceProvider
+class FilamentAccessControlServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -50,11 +49,10 @@ class FilamentAccessControlServiceProvider extends PluginServiceProvider
     public function packageBooted(): void
     {
         parent::packageBooted();
-        Livewire::component(Login::getName(), Login::class);
-        Livewire::component(ForgotPassword::getName(), ForgotPassword::class);
-        Livewire::component(ResetPassword::getName(), ResetPassword::class);
-        Livewire::component(AccountExpired::getName(), AccountExpired::class);
-        Livewire::component(TwoFactorChallenge::getName(), TwoFactorChallenge::class);
+
+        $this->registerComponent(Login::class);
+        $this->registerComponent(AccountExpired::class);
+        $this->registerComponent(TwoFactorChallenge::class);
         Gate::policy(config('filament-access-control.user_model'), FilamentUserPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Permission::class, PermissionPolicy::class);
@@ -113,5 +111,11 @@ class FilamentAccessControlServiceProvider extends PluginServiceProvider
     {
         $default = $this->app['config']->get($key, []);
         $this->app['config']->set($key, array_merge($config, $default));
+    }
+
+    protected function registerComponent(string $component): void
+    {
+        $name = app(ComponentRegistry::class)->getName($component);
+        Livewire::component($name, $component);
     }
 }
