@@ -7,13 +7,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('filament.')->group(function () {
     foreach (Filament::getPanels() as $panel) {
-        Route::domain($panel->getDomain())
-            ->middleware($panel->getMiddleware())
-            ->name($panel->getId() . '.')
-            ->prefix($panel->getPath())
-            ->group(function () use ($panel) {
-                Route::get('/auth/expired', AccountExpired::class)->name('account.expired');
-                Route::get('/auth/two-factor', TwoFactorChallenge::class)->name('account.two-factor');
-            });
+        $domains = $panel->getDomains();
+
+        foreach ((empty($domains) ? [null] : $domains) as $domain) {
+            Route::domain($domain)
+                ->middleware($panel->getMiddleware())
+                ->name($panel->getId() . '.')
+                ->prefix($panel->getPath())
+                ->group(function () use ($panel) {
+                    Route::get('/auth/expired', AccountExpired::class)->name('account.expired');
+                    Route::get('/auth/two-factor', TwoFactorChallenge::class)->name('account.two-factor');
+                });
+        }
     }
 });
