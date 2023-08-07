@@ -4,14 +4,15 @@ namespace Chiiya\FilamentAccessControl\Commands;
 
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use Chiiya\FilamentAccessControl\Enumerators\RoleName;
-use Filament\Support\Commands\Concerns\CanValidateInput;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+
+use function Laravel\Prompts\password;
+use function Laravel\Prompts\text;
 
 class CreateFilamentUser extends Command
 {
-    use CanValidateInput;
-
     /**
      * The name and signature of the console command.
      *
@@ -27,21 +28,35 @@ class CreateFilamentUser extends Command
     protected $description = 'Create new filament admin user.';
 
     /**
+     * @return class-string<Model>
+     */
+    protected static function getUserModel(): string
+    {
+        return config('filament-access-control.user_model');
+    }
+
+    /**
      * Execute the console command.
      */
     public function handle(): int
     {
         $values = [
-            'first_name' => $this->validateInput(fn () => $this->ask('First Name'), 'first_name', ['required']),
-            'last_name' => $this->validateInput(fn () => $this->ask('Last Name'), 'last_name', ['required']),
-            'email' => $this->validateInput(
-                fn () => $this->ask('Email address'),
-                'email',
-                ['required', 'email', 'unique:filament_users'],
+            'first_name' => text(label: 'First Name', required: true),
+            'last_name' => text(label: 'Last Name', required: true),
+            'email' => text(
+                label: 'Email address',
+                required: true,
+                validate: fn (string $email): ?string => match (true) {
+                    ! filter_var($email, FILTER_VALIDATE_EMAIL) => 'The email address must be valid.',
+                    static::getUserModel()::query()->where(
+                        'email',
+                        '=',
+                        $email,
+                    )->exists() => 'A user with this email address already exists',
+                    default => null,
+                },
             ),
-            'password' => Hash::make(
-                $this->validateInput(fn () => $this->secret('Password'), 'password', ['required', 'min:8']),
-            ),
+            'password' => Hash::make(password(label: 'Password', required: true)),
         ];
 
         if (Feature::enabled(Feature::ACCOUNT_EXPIRY)) {
@@ -50,7 +65,7 @@ class CreateFilamentUser extends Command
             ]);
         }
 
-        $user = config('filament-access-control.user_model')::query()->create($values);
+        $user = static::getUserModel()::query()->create($values);
         $user->assignRole(RoleName::SUPER_ADMIN);
         $user->save();
         $this->info("Success! {$user->email} may now log in.");
