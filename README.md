@@ -27,16 +27,20 @@ Opinionated setup for managing admin users, roles and permissions within [Larave
 composer require chiiya/filament-access-control
 ```
 
-2. Update your `config/filament.php` file to use the package's guard and `Login` page:
+2. Update your Filament Panel ServiceProvider and register the plugin:
 
 ```php
-'auth' => [
-    'guard' => env('FILAMENT_AUTH_GUARD', 'filament'),
-    'pages' => [
-        'login' => \Chiiya\FilamentAccessControl\Http\Livewire\Login::class,
-    ],
-],
+use Chiiya\FilamentAccessControl\FilamentAccessControlPlugin;
+
+return $panel
+    ->default()
+    ->id('admin')
+    ->path('admin')
+    ->plugin(FilamentAccessControlPlugin::make())
 ```
+
+You may remove any calls to `login()` or other methods that configure the authentication process, since the plugin
+takes care of that.
 
 3. Publish the migrations and config, then run the migrations. Make sure you also publish
    and run the [spatie/laravel-permission](https://github.com/spatie/laravel-permission) migrations
@@ -138,17 +142,17 @@ enable the feature flag in the config file:
 ],
 ```
 
-You will also need to add the `EnsureAccountIsNotExpired` middleware to your filament auth middleware config:
+You will also need to add the `EnsureAccountIsNotExpired` middleware to your filament auth middleware config in your
+panel service provider:
 
 ```php
 use Chiiya\FilamentAccessControl\Http\Middleware\EnsureAccountIsNotExpired;
 
-'middleware' => [
-    'auth' => [
-        Authenticate::class,
-        EnsureAccountIsNotExpired::class,
-    ],
-]
+...
+->authMiddleware([
+    Authenticate::class,
+    EnsureAccountIsNotExpired::class,
+]);
 ```
 
 ### Feature: Two-Factor Authentication
