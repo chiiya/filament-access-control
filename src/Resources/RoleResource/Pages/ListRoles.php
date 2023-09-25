@@ -8,7 +8,10 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListRoles extends ListRecords
 {
-    protected static string $resource = RoleResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.role', RoleResource::class);
+    }
 
     protected function getHeaderActions(): array
     {

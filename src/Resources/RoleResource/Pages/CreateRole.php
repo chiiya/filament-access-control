@@ -9,7 +9,10 @@ use Spatie\Permission\PermissionRegistrar;
 
 class CreateRole extends CreateRecord
 {
-    protected static string $resource = RoleResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.role', RoleResource::class);
+    }
 
     public function afterCreate(): void
     {

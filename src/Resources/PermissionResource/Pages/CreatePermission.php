@@ -7,7 +7,10 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreatePermission extends CreateRecord
 {
-    protected static string $resource = PermissionResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.permission', PermissionResource::class);
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

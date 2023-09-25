@@ -11,9 +11,6 @@ use Chiiya\FilamentAccessControl\Models\FilamentUser;
 use Chiiya\FilamentAccessControl\Policies\FilamentUserPolicy;
 use Chiiya\FilamentAccessControl\Policies\PermissionPolicy;
 use Chiiya\FilamentAccessControl\Policies\RolePolicy;
-use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
-use Chiiya\FilamentAccessControl\Resources\PermissionResource;
-use Chiiya\FilamentAccessControl\Resources\RoleResource;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Livewire;
 use Livewire\Mechanisms\ComponentRegistry;
@@ -56,11 +53,6 @@ class FilamentAccessControlServiceProvider extends PackageServiceProvider
         Gate::policy(config('filament-access-control.user_model'), FilamentUserPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Permission::class, PermissionPolicy::class);
-    }
-
-    protected function getResources(): array
-    {
-        return [FilamentUserResource::class, PermissionResource::class, RoleResource::class];
     }
 
     /**

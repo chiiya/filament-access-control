@@ -10,7 +10,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class ListFilamentUsers extends ListRecords
 {
-    protected static string $resource = FilamentUserResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.user', FilamentUserResource::class);
+    }
 
     public function extendUsers(Collection $users): void
     {

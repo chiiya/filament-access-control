@@ -7,5 +7,8 @@ use Filament\Resources\Pages\ViewRecord;
 
 class ViewFilamentUser extends ViewRecord
 {
-    protected static string $resource = FilamentUserResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.user', FilamentUserResource::class);
+    }
 }

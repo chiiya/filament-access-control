@@ -12,7 +12,10 @@ use Spatie\Permission\PermissionRegistrar;
 
 class CreateFilamentUser extends CreateRecord
 {
-    protected static string $resource = FilamentUserResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.user', FilamentUserResource::class);
+    }
 
     public function afterCreate(): void
     {

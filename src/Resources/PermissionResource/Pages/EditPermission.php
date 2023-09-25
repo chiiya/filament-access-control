@@ -8,7 +8,10 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditPermission extends EditRecord
 {
-    protected static string $resource = PermissionResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.permission', PermissionResource::class);
+    }
 
     protected function getHeaderActions(): array
     {

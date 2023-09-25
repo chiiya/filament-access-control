@@ -10,7 +10,10 @@ use Spatie\Permission\PermissionRegistrar;
 
 class EditRole extends EditRecord
 {
-    protected static string $resource = RoleResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.role', RoleResource::class);
+    }
 
     public function afterSave(): void
     {

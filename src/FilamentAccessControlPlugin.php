@@ -40,7 +40,11 @@ class FilamentAccessControlPlugin implements Plugin
                 Authenticate::class,
                 ...(Feature::enabled(Feature::ACCOUNT_EXPIRY) ? [EnsureAccountIsNotExpired::class] : []),
             ])
-            ->resources([FilamentUserResource::class, PermissionResource::class, RoleResource::class]);
+            ->resources([
+                config('filament-access-control.resources.user', FilamentUserResource::class),
+                config('filament-access-control.resources.permission', PermissionResource::class),
+                config('filament-access-control.resources.role', RoleResource::class),
+            ]);
     }
 
     public function boot(Panel $panel): void {}

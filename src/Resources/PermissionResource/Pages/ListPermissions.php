@@ -8,7 +8,10 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListPermissions extends ListRecords
 {
-    protected static string $resource = PermissionResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.permission', PermissionResource::class);
+    }
 
     protected function getHeaderActions(): array
     {

@@ -9,7 +9,10 @@ use Spatie\Permission\PermissionRegistrar;
 
 class EditFilamentUser extends EditRecord
 {
-    protected static string $resource = FilamentUserResource::class;
+    public static function getResource(): string
+    {
+        return config('filament-access-control.resources.user', FilamentUserResource::class);
+    }
 
     public function afterSave(): void
     {
