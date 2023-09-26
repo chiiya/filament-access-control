@@ -4,7 +4,6 @@ namespace Chiiya\FilamentAccessControl\Fields;
 
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
 
 class RoleSelect extends Select
 {
@@ -26,8 +25,10 @@ class RoleSelect extends Select
             $component->state($role->id);
         });
 
+        $model = config('permission.models.role');
+
         $this->options(
-            fn () => Role::query()
+            fn () => $model::query()
                 ->where('guard_name', 'filament')
                 ->pluck('name', 'id')
                 ->map(fn (string $name) => __($name))

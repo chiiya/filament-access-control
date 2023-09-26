@@ -16,13 +16,16 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
 {
     use HasExtendableSchema;
-    protected static ?string $model = Role::class;
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    public static function getModel(): string
+    {
+        return config('permission.models.role');
+    }
 
     public static function form(Form $form): Form
     {
@@ -35,7 +38,7 @@ class RoleResource extends Resource
                     ->validationAttribute(__('filament-access-control::default.fields.name'))
                     ->required()
                     ->maxLength(255)
-                    ->unique(config('permission.table_names.roles'), 'name', fn (?Role $record): ?Role => $record),
+                    ->unique(config('permission.table_names.roles'), 'name', fn ($record) => $record),
                 PermissionGroup::make('permissions')
                     ->label(__('filament-access-control::default.fields.permissions'))
                     ->validationAttribute(__('filament-access-control::default.fields.permissions')),
@@ -53,7 +56,7 @@ class RoleResource extends Resource
                     ->sortable(),
                 TextColumn::make('description')
                     ->label(__('filament-access-control::default.fields.description'))
-                    ->getStateUsing(fn (Role $record) => __($record->name)),
+                    ->getStateUsing(fn ($record) => __($record->name)),
                 TextColumn::make('name')
                     ->label(__('filament-access-control::default.fields.name'))
                     ->searchable(),
@@ -88,7 +91,9 @@ class RoleResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return Role::query()->where('guard_name', '=', 'filament');
+        $model = config('permission.models.role');
+
+        return $model::query()->where('guard_name', '=', 'filament');
     }
 
     public static function getNavigationGroup(): ?string

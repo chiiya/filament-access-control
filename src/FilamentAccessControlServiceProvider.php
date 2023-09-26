@@ -16,8 +16,6 @@ use Livewire\Livewire;
 use Livewire\Mechanisms\ComponentRegistry;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class FilamentAccessControlServiceProvider extends PackageServiceProvider
 {
@@ -51,8 +49,8 @@ class FilamentAccessControlServiceProvider extends PackageServiceProvider
         $this->registerComponent(AccountExpired::class);
         $this->registerComponent(TwoFactorChallenge::class);
         Gate::policy(config('filament-access-control.user_model'), FilamentUserPolicy::class);
-        Gate::policy(Role::class, RolePolicy::class);
-        Gate::policy(Permission::class, PermissionPolicy::class);
+        Gate::policy(config('permission.models.role'), RolePolicy::class);
+        Gate::policy(config('permission.models.permission'), PermissionPolicy::class);
     }
 
     /**
