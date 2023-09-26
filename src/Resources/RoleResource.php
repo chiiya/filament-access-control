@@ -6,6 +6,7 @@ use Chiiya\FilamentAccessControl\Fields\PermissionGroup;
 use Chiiya\FilamentAccessControl\Resources\RoleResource\Pages\CreateRole;
 use Chiiya\FilamentAccessControl\Resources\RoleResource\Pages\EditRole;
 use Chiiya\FilamentAccessControl\Resources\RoleResource\Pages\ListRoles;
+use Chiiya\FilamentAccessControl\Traits\HasExtendableSchema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,6 +20,7 @@ use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
 {
+    use HasExtendableSchema;
     protected static ?string $model = Role::class;
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -27,6 +29,7 @@ class RoleResource extends Resource
         return $form
             ->columns(1)
             ->schema([
+                ...static::insertBeforeFormSchema(),
                 TextInput::make('name')
                     ->label(__('filament-access-control::default.fields.name'))
                     ->validationAttribute(__('filament-access-control::default.fields.name'))
@@ -36,6 +39,7 @@ class RoleResource extends Resource
                 PermissionGroup::make('permissions')
                     ->label(__('filament-access-control::default.fields.permissions'))
                     ->validationAttribute(__('filament-access-control::default.fields.permissions')),
+                ...static::insertAfterFormSchema(),
             ]);
     }
 
@@ -43,6 +47,7 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
+                ...static::insertBeforeTableSchema(),
                 TextColumn::make('id')
                     ->label(__('filament-access-control::default.fields.id'))
                     ->sortable(),
@@ -55,6 +60,7 @@ class RoleResource extends Resource
                 TextColumn::make('created_at')
                     ->label(__('filament-access-control::default.fields.created_at'))
                     ->dateTime(),
+                ...static::insertAfterTableSchema(),
             ])
             ->actions([EditAction::make()])
             ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])])

@@ -11,6 +11,7 @@ use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\CreateFila
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\EditFilamentUser;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\ListFilamentUsers;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\ViewFilamentUser;
+use Chiiya\FilamentAccessControl\Traits\HasExtendableSchema;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
@@ -32,6 +33,7 @@ use Livewire\Component;
 
 class FilamentUserResource extends Resource
 {
+    use HasExtendableSchema;
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
@@ -42,7 +44,8 @@ class FilamentUserResource extends Resource
                     ->schema(
                         fn (Component $livewire) => $livewire instanceof ViewFilamentUser
                             ? [
-                                self::detailsSection(),
+                                ...static::insertBeforeFormSchema(),
+                                static::detailsSection(),
                                 Section::make(__('filament-access-control::default.sections.permissions'))
                                     ->description(__('filament-access-control::default.messages.permissions_view'))
                                     ->schema([
@@ -55,8 +58,10 @@ class FilamentUserResource extends Resource
                                                 fn ($record) => $record->getAllPermissions()->pluck('id')->all(),
                                             ),
                                     ]),
+                                ...static::insertAfterFormSchema(),
                             ] : [
-                                self::detailsSection(),
+                                ...static::insertBeforeFormSchema(),
+                                static::detailsSection(),
                                 Section::make(__('filament-access-control::default.sections.permissions'))
                                     ->description(__('filament-access-control::default.messages.permissions_create'))
                                     ->schema([
@@ -66,6 +71,7 @@ class FilamentUserResource extends Resource
                                                 __('filament-access-control::default.fields.permissions'),
                                             ),
                                     ]),
+                                ...static::insertAfterFormSchema(),
                             ],
                     )
                     ->columns(1),
@@ -76,6 +82,7 @@ class FilamentUserResource extends Resource
     {
         return $table
             ->columns([
+                ...static::insertBeforeTableSchema(),
                 TextColumn::make('full_name')
                     ->label(__('filament-access-control::default.fields.full_name'))
                     ->searchable(['first_name', 'last_name']),
@@ -95,6 +102,7 @@ class FilamentUserResource extends Resource
                         ]
                         : []
                 ),
+                ...static::insertAfterTableSchema(),
             ])
             ->actions([EditAction::make(), ViewAction::make()])
             ->bulkActions([
@@ -167,41 +175,46 @@ class FilamentUserResource extends Resource
         return __('filament-access-control::default.resources.group');
     }
 
+    protected static function detailsSectionSchema(): array
+    {
+        return [
+            TextInput::make('first_name')
+                ->label(__('filament-access-control::default.fields.first_name'))
+                ->validationAttribute(__('filament-access-control::default.fields.first_name'))
+                ->required(),
+            TextInput::make('last_name')
+                ->label(__('filament-access-control::default.fields.last_name'))
+                ->validationAttribute(__('filament-access-control::default.fields.last_name'))
+                ->required(),
+            TextInput::make('email')
+                ->label(__('filament-access-control::default.fields.email'))
+                ->validationAttribute(__('filament-access-control::default.fields.email'))
+                ->required()
+                ->email(),
+            RoleSelect::make('role')
+                ->label(__('filament-access-control::default.fields.role'))
+                ->validationAttribute(__('filament-access-control::default.fields.role')),
+            ...(
+                Feature::enabled(Feature::ACCOUNT_EXPIRY)
+                    ? [
+                        DatePicker::make('expires_at')
+                            ->label(__('filament-access-control::default.fields.expires_at'))
+                            ->validationAttribute(__('filament-access-control::default.fields.expires_at'))
+                            ->minDate(fn (Component $livewire) => static::evaluateMinDate($livewire))
+                            ->displayFormat(config('filament-access-control.date_format'))
+                            ->dehydrateStateUsing(
+                                fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString(),
+                            ),
+                    ]
+                    : []
+            ),
+        ];
+    }
+
     protected static function detailsSection(): Section
     {
         return Section::make(__('filament-access-control::default.sections.user_details'))
-            ->schema([
-                TextInput::make('first_name')
-                    ->label(__('filament-access-control::default.fields.first_name'))
-                    ->validationAttribute(__('filament-access-control::default.fields.first_name'))
-                    ->required(),
-                TextInput::make('last_name')
-                    ->label(__('filament-access-control::default.fields.last_name'))
-                    ->validationAttribute(__('filament-access-control::default.fields.last_name'))
-                    ->required(),
-                TextInput::make('email')
-                    ->label(__('filament-access-control::default.fields.email'))
-                    ->validationAttribute(__('filament-access-control::default.fields.email'))
-                    ->required()
-                    ->email(),
-                RoleSelect::make('role')
-                    ->label(__('filament-access-control::default.fields.role'))
-                    ->validationAttribute(__('filament-access-control::default.fields.role')),
-                ...(
-                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
-                        ? [
-                            DatePicker::make('expires_at')
-                                ->label(__('filament-access-control::default.fields.expires_at'))
-                                ->validationAttribute(__('filament-access-control::default.fields.expires_at'))
-                                ->minDate(fn (Component $livewire) => self::evaluateMinDate($livewire))
-                                ->displayFormat(config('filament-access-control.date_format'))
-                                ->dehydrateStateUsing(
-                                    fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString(),
-                                ),
-                        ]
-                        : []
-                ),
-            ]);
+            ->schema(static::detailsSectionSchema());
     }
 
     protected static function evaluateMinDate(Component $livewire): ?Carbon
