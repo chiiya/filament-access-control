@@ -38,7 +38,7 @@ class TwoFactorCode extends Notification implements ShouldQueue
      */
     protected function generateTwoFactorCode(): string
     {
-        return implode('', array_map(fn () => random_int(0, 9), range(1, 6)));
+        return implode('', array_map(static fn () => random_int(0, 9), range(1, 6)));
     }
 
     /**

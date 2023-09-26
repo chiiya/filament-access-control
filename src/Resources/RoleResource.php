@@ -38,7 +38,7 @@ class RoleResource extends Resource
                     ->validationAttribute(__('filament-access-control::default.fields.name'))
                     ->required()
                     ->maxLength(255)
-                    ->unique(config('permission.table_names.roles'), 'name', fn ($record) => $record),
+                    ->unique(config('permission.table_names.roles'), 'name', static fn ($record) => $record),
                 PermissionGroup::make('permissions')
                     ->label(__('filament-access-control::default.fields.permissions'))
                     ->validationAttribute(__('filament-access-control::default.fields.permissions')),
@@ -56,7 +56,7 @@ class RoleResource extends Resource
                     ->sortable(),
                 TextColumn::make('description')
                     ->label(__('filament-access-control::default.fields.description'))
-                    ->getStateUsing(fn ($record) => __($record->name)),
+                    ->getStateUsing(static fn ($record) => __($record->name)),
                 TextColumn::make('name')
                     ->label(__('filament-access-control::default.fields.name'))
                     ->searchable(),

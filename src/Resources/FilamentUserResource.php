@@ -42,7 +42,7 @@ class FilamentUserResource extends Resource
             ->schema([
                 Grid::make()
                     ->schema(
-                        fn (Component $livewire) => $livewire instanceof ViewFilamentUser
+                        static fn (Component $livewire) => $livewire instanceof ViewFilamentUser
                             ? [
                                 ...static::insertBeforeFormSchema(),
                                 static::detailsSection(),
@@ -55,7 +55,7 @@ class FilamentUserResource extends Resource
                                                 __('filament-access-control::default.fields.permissions'),
                                             )
                                             ->resolveStateUsing(
-                                                fn ($record) => $record->getAllPermissions()->pluck('id')->all(),
+                                                static fn ($record) => $record->getAllPermissions()->pluck('id')->all(),
                                             ),
                                     ]),
                                 ...static::insertAfterFormSchema(),
@@ -91,14 +91,14 @@ class FilamentUserResource extends Resource
                     ->searchable(),
                 TextColumn::make('role')
                     ->label(__('filament-access-control::default.fields.role'))
-                    ->getStateUsing(fn ($record) => __(optional($record->roles->first())->name)),
+                    ->getStateUsing(static fn ($record) => __(optional($record->roles->first())->name)),
                 ...(
                     Feature::enabled(Feature::ACCOUNT_EXPIRY)
                         ? [
                             IconColumn::make('active')
                                 ->boolean()
                                 ->label(__('filament-access-control::default.fields.active'))
-                                ->getStateUsing(fn (AccessControlUser $record) => ! $record->isExpired()),
+                                ->getStateUsing(static fn (AccessControlUser $record) => ! $record->isExpired()),
                         ]
                         : []
                 ),
@@ -130,7 +130,7 @@ class FilamentUserResource extends Resource
                         ? [
                             Filter::make(__('filament-access-control::default.filters.expired'))
                                 ->query(
-                                    fn (Builder $query) => $query->whereNotNull(
+                                    static fn (Builder $query) => $query->whereNotNull(
                                         'expires_at',
                                     )->where('expires_at', '<=', now()),
                                 ),
@@ -200,10 +200,10 @@ class FilamentUserResource extends Resource
                         DatePicker::make('expires_at')
                             ->label(__('filament-access-control::default.fields.expires_at'))
                             ->validationAttribute(__('filament-access-control::default.fields.expires_at'))
-                            ->minDate(fn (Component $livewire) => static::evaluateMinDate($livewire))
+                            ->minDate(static fn (Component $livewire) => static::evaluateMinDate($livewire))
                             ->displayFormat(config('filament-access-control.date_format'))
                             ->dehydrateStateUsing(
-                                fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString(),
+                                static fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString(),
                             ),
                     ]
                     : []

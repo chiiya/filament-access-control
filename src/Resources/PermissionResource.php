@@ -41,7 +41,7 @@ class PermissionResource extends Resource
                     ->unique(
                         config('permission.table_names.permissions'),
                         'name',
-                        fn (?Permission $record): ?Permission => $record,
+                        static fn (?Permission $record): ?Permission => $record,
                     ),
                 ...static::insertAfterFormSchema(),
             ]);
@@ -57,7 +57,7 @@ class PermissionResource extends Resource
                     ->sortable(),
                 TextColumn::make('description')
                     ->label(__('filament-access-control::default.fields.description'))
-                    ->getStateUsing(fn (Permission $record) => __($record->name)),
+                    ->getStateUsing(static fn (Permission $record) => __($record->name)),
                 TextColumn::make('name')
                     ->label(__('filament-access-control::default.fields.name'))
                     ->searchable(),

@@ -53,20 +53,20 @@ class PermissionGroup extends CheckboxList
                 // https://github.com/laravel-filament/filament/issues/1111
                 $relatedModels
                     ->pluck($relationship->getRelatedKeyName())
-                    ->map(fn ($key): string => (string) $key)
+                    ->map(static fn ($key): string => (string) $key)
                     ->toArray(),
             );
         });
 
-        $this->saveRelationshipsUsing(function (self $component, ?array $state): void {
+        $this->saveRelationshipsUsing(static function (self $component, ?array $state): void {
             $component->getRelationship()->sync($state ?? []);
         });
 
         $this->options(
-            fn () => Permission::query()
+            static fn () => Permission::query()
                 ->where('guard_name', 'filament')
                 ->pluck('name', 'id')
-                ->map(fn (string $name) => __($name))
+                ->map(static fn (string $name) => __($name))
                 ->all(),
         );
 

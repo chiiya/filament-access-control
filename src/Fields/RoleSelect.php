@@ -13,7 +13,7 @@ class RoleSelect extends Select
 
         $this->relationship = 'roles';
 
-        $this->afterStateHydrated(function (self $component): void {
+        $this->afterStateHydrated(static function (self $component): void {
             $relationship = $component->getRelationship();
 
             $role = $relationship->first();
@@ -28,10 +28,10 @@ class RoleSelect extends Select
         $model = config('permission.models.role');
 
         $this->options(
-            fn () => $model::query()
+            static fn () => $model::query()
                 ->where('guard_name', 'filament')
                 ->pluck('name', 'id')
-                ->map(fn (string $name) => __($name))
+                ->map(static fn (string $name) => __($name))
                 ->all(),
         );
 

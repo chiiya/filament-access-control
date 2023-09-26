@@ -46,7 +46,7 @@ class CreateFilamentUser extends Command
             'email' => text(
                 label: 'Email address',
                 required: true,
-                validate: fn (string $email): ?string => match (true) {
+                validate: static fn (string $email): ?string => match (true) {
                     ! filter_var($email, FILTER_VALIDATE_EMAIL) => 'The email address must be valid.',
                     static::getUserModel()::query()->where(
                         'email',
