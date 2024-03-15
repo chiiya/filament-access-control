@@ -59,7 +59,7 @@ class TwoFactorChallenge extends SimplePage
         return redirect()->intended(Filament::getUrl());
     }
 
-    public function getTitle(): string|Htmlable
+    public function getTitle(): Htmlable|string
     {
         return __('filament-access-control::default.pages.two_factor');
     }
