@@ -2,7 +2,7 @@
 
 namespace Chiiya\FilamentAccessControl\Models;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
 use Chiiya\FilamentAccessControl\Database\Factories\FilamentUserFactory;
 use Chiiya\FilamentAccessControl\Enumerators\RoleName;
@@ -17,6 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -29,12 +30,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $password
  * @property null|string $first_name
  * @property null|string $last_name
- * @property null|\Illuminate\Support\Carbon $expires_at
+ * @property null|Carbon|CarbonImmutable $expires_at
  * @property null|string $two_factor_code
- * @property null|\Illuminate\Support\Carbon $two_factor_expires_at
+ * @property null|Carbon|CarbonImmutable $two_factor_expires_at
  * @property null|string $remember_token
- * @property null|\Illuminate\Support\Carbon $created_at
- * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property null|Carbon|CarbonImmutable $created_at
+ * @property null|Carbon|CarbonImmutable $updated_at
  * @property string $full_name
  * @property DatabaseNotification[]|DatabaseNotificationCollection $notifications
  * @property null|int $notifications_count
@@ -139,7 +140,7 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
      */
     public function isExpired(): bool
     {
-        return $this->expires_at instanceof \Illuminate\Support\Carbon && now()->gt($this->expires_at);
+        return $this->expires_at !== null && now()->gt($this->expires_at);
     }
 
     /**
@@ -173,7 +174,7 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
      */
     public function twoFactorCodeIsExpired(): bool
     {
-        return $this->two_factor_expires_at instanceof Carbon && now()->gt($this->two_factor_expires_at);
+        return $this->two_factor_expires_at !== null && now()->gt($this->two_factor_expires_at);
     }
 
     /**

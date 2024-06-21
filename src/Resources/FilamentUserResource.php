@@ -3,6 +3,7 @@
 namespace Chiiya\FilamentAccessControl\Resources;
 
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use Chiiya\FilamentAccessControl\Fields\PermissionGroup;
@@ -203,7 +204,7 @@ class FilamentUserResource extends Resource
                             ->minDate(static fn (Component $livewire) => static::evaluateMinDate($livewire))
                             ->displayFormat(config('filament-access-control.date_format'))
                             ->dehydrateStateUsing(
-                                static fn ($state) => Carbon::parse($state)->endOfDay()->toDateTimeString(),
+                                static fn ($state) => CarbonImmutable::parse($state)->endOfDay()->toDateTimeString(),
                             ),
                     ]
                     : []
@@ -217,7 +218,7 @@ class FilamentUserResource extends Resource
             ->schema(static::detailsSectionSchema());
     }
 
-    protected static function evaluateMinDate(Component $livewire): ?Carbon
+    protected static function evaluateMinDate(Component $livewire): null|Carbon|CarbonImmutable
     {
         if ($livewire instanceof CreateFilamentUser) {
             return now();
