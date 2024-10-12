@@ -2,6 +2,7 @@
 
 namespace Chiiya\FilamentAccessControl\Resources;
 
+use Chiiya\FilamentAccessControl\Http\Controllers\PasswordResetController;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
@@ -19,6 +20,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
@@ -30,7 +32,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Livewire\Component;
+
 
 class FilamentUserResource extends Resource
 {
@@ -105,7 +109,13 @@ class FilamentUserResource extends Resource
                 ),
                 ...static::insertAfterTableSchema(),
             ])
-            ->actions([EditAction::make(), ViewAction::make()])
+            ->actions([EditAction::make(), ViewAction::make(), Action::make('reset_password')
+            ->action(function ($record) {
+                // Call the method to send reset link
+                return (new PasswordResetController())->sendResetLink(new Request([
+                    'email' => $record->email, // Pass the user's email
+                ]));
+            })])
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

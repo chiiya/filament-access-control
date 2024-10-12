@@ -2,6 +2,7 @@
 
 use Chiiya\FilamentAccessControl\Http\Livewire\AccountExpired;
 use Chiiya\FilamentAccessControl\Http\Livewire\TwoFactorChallenge;
+use Chiiya\FilamentAccessControl\Http\Controllers\PasswordResetController;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,6 @@ Route::name('filament.')->group(function () {
         }
     }
 });
+
+// Password reset routes
+Route::get('/password/reset', [PasswordResetController::class])->name('password.reset');

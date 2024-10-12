@@ -2,6 +2,12 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v1.8.2 - 2024-10-12
+
+### What's Changed
+
+- Feature "Send Password Link" added to the admin panel.
+
 ## v1.8.1 - 2023-06-19
 
 ### What's Changed
