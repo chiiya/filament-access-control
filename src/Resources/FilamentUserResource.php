@@ -2,7 +2,7 @@
 
 namespace Chiiya\FilamentAccessControl\Resources;
 
-use Chiiya\FilamentAccessControl\Http\Controllers\PasswordResetController;
+use Chiiya\FilamentAccessControl\Services\PasswordResetService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
@@ -111,10 +111,7 @@ class FilamentUserResource extends Resource
             ])
             ->actions([EditAction::make(), ViewAction::make(), Action::make('reset_password')
             ->action(function ($record) {
-                // Call the method to send reset link
-                return (new PasswordResetController())->sendResetLink(new Request([
-                    'email' => $record->email, // Pass the user's email
-                ]));
+                return (new PasswordResetService())->sendResetLink($record);
             })])
             ->bulkActions([
                 BulkActionGroup::make([
