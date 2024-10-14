@@ -21,6 +21,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
@@ -109,10 +110,17 @@ class FilamentUserResource extends Resource
                 ),
                 ...static::insertAfterTableSchema(),
             ])
-            ->actions([EditAction::make(), ViewAction::make(), Action::make('reset_password')
-            ->action(function ($record) {
-                return (new PasswordResetService())->sendResetLink($record);
-            })])
+            ->actions([
+                EditAction::make(),
+                ViewAction::make(),
+                ActionGroup::make([
+                    Action::make('reset_password')
+                        ->icon('heroicon-o-key')
+                        ->action(function ($record) {
+                            return (new PasswordResetService())->sendResetLink($record);
+                        })
+                ])
+            ])
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
