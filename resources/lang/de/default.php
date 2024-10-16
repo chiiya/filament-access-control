@@ -36,10 +36,12 @@ return [
         'permissions_view' => 'Direkte Berechtigungen sowie Berechtigungen über die Rolle.',
         'account_expired' => 'Dieser Account ist abgelaufen. Bitte kontaktieren Sie einen Administrator.',
         'accounts_extended' => 'Die ausgewählten Accounts wurden erfolgreich verlängert.',
+        'account_extended' => 'Das ausgewählte Konto wurde erweitert.',
         'invalid_user' => 'Ungültiger Benutzer, bitte versuchen Sie es erneut.',
         'code_expired' => 'Dieser Verifizierungscode ist abgelaufen. Bitte verwenden Sie den neuen Code, den wir Ihnen gerade geschickt haben.',
         'invalid_code' => 'Ungültiger Verifizierungscode.',
         'enter_code' => 'Bitte geben Sie zur Bestätigung Ihres Logins den Verifizierungscode ein, der an Ihre E-Mail Adresse geschickt wurde.',
+        'password_reset_link_sent' => 'Link zum Zurücksetzen des Passworts gesendet!',
     ],
     'pages' => [
         'reset_password' => 'Passwort zurücksetzen',
@@ -75,5 +77,6 @@ return [
     ],
     'actions' => [
         'extend' => 'Account verlängern',
+        'reset_password' => 'Passwort zurücksetzen',
     ],
 ];

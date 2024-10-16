@@ -112,13 +112,26 @@ class FilamentUserResource extends Resource
             ->actions([
                 EditAction::make(),
                 ViewAction::make(),
-                ActionGroup::make([
-                    Action::make('reset_password')
-                        ->icon('heroicon-o-key')
-                        ->action(function ($record) {
-                            return (new PasswordResetService())->sendResetLink($record);
-                        })
-                ])
+                ActionGroup::make(array_merge(
+                    [
+                        Action::make('reset_password')
+                            ->icon('heroicon-o-key')
+                            ->label(__('filament-access-control::default.actions.reset_password'))
+                            ->requiresConfirmation()
+                            ->action(function ($record) {
+                                return (new PasswordResetService())->sendResetLink($record);
+                            }),
+                    ],
+                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
+                        ? [
+                            Action::make('extend')
+                                ->label(__('filament-access-control::default.actions.extend'))
+                                ->action('extendUsers')
+                                ->requiresConfirmation()
+                                ->icon('heroicon-o-clock'),
+                        ]
+                        : []
+                ))
             ])
             ->bulkActions([
                 BulkActionGroup::make([

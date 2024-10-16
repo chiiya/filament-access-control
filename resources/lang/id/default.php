@@ -36,10 +36,12 @@ return [
         'permissions_view' => 'Izin langsung serta izin melalui peran mereka.',
         'account_expired' => 'Akun ini telah kedaluwarsa. Harap hubungi seorang administrator.',
         'accounts_extended' => 'Akun yang dipilih telah diperpanjang.',
+        'account_extended' => 'Akun yang dipilih telah diperpanjang.',
         'invalid_user' => 'Pengguna tidak valid, harap coba lagi.',
         'code_expired' => 'Kode verifikasi ini telah kedaluwarsa. Harap gunakan kode baru yang baru saja kami kirimkan kepada Anda.',
         'invalid_code' => 'Kode verifikasi tidak valid.',
         'enter_code' => 'Untuk mengonfirmasi login Anda, harap masukkan kode verifikasi yang dikirimkan ke alamat email Anda.',
+        'password_reset_link_sent' => 'Tautan setel ulang kata sandi terkirim!',
     ],
     'pages' => [
         'reset_password' => 'Atur Ulang Kata Sandi',
@@ -75,5 +77,6 @@ return [
     ],
     'actions' => [
         'extend' => 'Perpanjang Tanggal Kadaluarsa',
+        'reset_password' => 'Setel ulang kata sandi',
     ],
 ];

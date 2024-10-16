@@ -19,9 +19,14 @@ class ListFilamentUsers extends ListRecords
     {
         $users->each->extend();
 
-        Notification::make()->title(
-            __('filament-access-control::default.messages.accounts_extended'),
-        )->success()->send();
+        $message = $users->count() === 1
+            ? __('filament-access-control::default.messages.account_extended')
+            : __('filament-access-control::default.messages.accounts_extended');
+
+        Notification::make()
+            ->title($message)
+            ->success()
+            ->send();
     }
 
     protected function getHeaderActions(): array

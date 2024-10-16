@@ -24,7 +24,7 @@ class PasswordResetService
             $user->notify($notification);
 
             Notification::make()
-                ->title(__('Password reset link sent!'))
+                ->title(__('filament-access-control::default.messages.password_reset_link_sent'))
                 ->success()
                 ->send();
         } catch (Exception $e) {
