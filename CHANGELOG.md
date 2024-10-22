@@ -2,6 +2,18 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## 2.5.0 - 2024-10-22
+
+### What's Changed
+
+* Added a feature to send reset password links in admin panel. by @GeminiDev1 in https://github.com/chiiya/filament-access-control/pull/62
+
+### New Contributors
+
+* @GeminiDev1 made their first contribution in https://github.com/chiiya/filament-access-control/pull/62
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/2.4.2...2.5.0
+
 ## v1.8.1 - 2023-06-19
 
 ### What's Changed
