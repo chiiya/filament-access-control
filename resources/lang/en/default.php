@@ -36,10 +36,12 @@ return [
         'permissions_view' => 'Direct permissions as well as permissions through their role.',
         'account_expired' => 'This account is expired. Please contact an administrator.',
         'accounts_extended' => 'The selected accounts have been extended.',
+        'account_extended' => 'The selected account has been extended.',
         'invalid_user' => 'Invalid user, please try again.',
         'code_expired' => 'This verification code has expired. Please use the new code that we have just sent you.',
         'invalid_code' => 'Invalid verification code.',
         'enter_code' => 'To confirm your login, please enter the verification code sent to your email address.',
+        'password_reset_link_sent' => 'Password reset link sent!',
     ],
     'pages' => [
         'reset_password' => 'Reset password',
@@ -75,5 +77,6 @@ return [
     ],
     'actions' => [
         'extend' => 'Extend expiry date',
+        'reset_password' => 'Reset password',
     ],
 ];

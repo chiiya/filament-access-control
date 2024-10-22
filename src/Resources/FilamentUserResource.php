@@ -2,6 +2,7 @@
 
 namespace Chiiya\FilamentAccessControl\Resources;
 
+use Chiiya\FilamentAccessControl\Services\PasswordResetService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
@@ -19,6 +20,8 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
@@ -31,6 +34,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
+
 
 class FilamentUserResource extends Resource
 {
@@ -105,7 +109,30 @@ class FilamentUserResource extends Resource
                 ),
                 ...static::insertAfterTableSchema(),
             ])
-            ->actions([EditAction::make(), ViewAction::make()])
+            ->actions([
+                EditAction::make(),
+                ViewAction::make(),
+                ActionGroup::make(array_merge(
+                    [
+                        Action::make('reset_password')
+                            ->icon('heroicon-o-key')
+                            ->label(__('filament-access-control::default.actions.reset_password'))
+                            ->requiresConfirmation()
+                            ->action(function ($record) {
+                                return (new PasswordResetService())->sendResetLink($record);
+                            }),
+                    ],
+                    Feature::enabled(Feature::ACCOUNT_EXPIRY)
+                        ? [
+                            Action::make('extend')
+                                ->label(__('filament-access-control::default.actions.extend'))
+                                ->action('extendUsers')
+                                ->requiresConfirmation()
+                                ->icon('heroicon-o-clock'),
+                        ]
+                        : []
+                ))
+            ])
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
