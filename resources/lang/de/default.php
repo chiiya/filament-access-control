@@ -36,7 +36,7 @@ return [
         'permissions_view' => 'Direkte Berechtigungen sowie Berechtigungen über die Rolle.',
         'account_expired' => 'Dieser Account ist abgelaufen. Bitte kontaktieren Sie einen Administrator.',
         'accounts_extended' => 'Die ausgewählten Accounts wurden erfolgreich verlängert.',
-        'account_extended' => 'Das ausgewählte Konto wurde erweitert.',
+        'account_extended' => 'Der ausgewählte Account wurde verlängert.',
         'invalid_user' => 'Ungültiger Benutzer, bitte versuchen Sie es erneut.',
         'code_expired' => 'Dieser Verifizierungscode ist abgelaufen. Bitte verwenden Sie den neuen Code, den wir Ihnen gerade geschickt haben.',
         'invalid_code' => 'Ungültiger Verifizierungscode.',
