@@ -2,7 +2,6 @@
 
 namespace Chiiya\FilamentAccessControl\Resources;
 
-use Chiiya\FilamentAccessControl\Services\PasswordResetService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
@@ -13,6 +12,7 @@ use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\CreateFila
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\EditFilamentUser;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\ListFilamentUsers;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\ViewFilamentUser;
+use Chiiya\FilamentAccessControl\Services\AuthService;
 use Chiiya\FilamentAccessControl\Traits\HasExtendableSchema;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
@@ -34,7 +34,6 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
-
 
 class FilamentUserResource extends Resource
 {
@@ -118,9 +117,9 @@ class FilamentUserResource extends Resource
                             ->icon('heroicon-o-key')
                             ->label(__('filament-access-control::default.actions.reset_password'))
                             ->requiresConfirmation()
-                            ->action(function ($record) {
-                                return (new PasswordResetService())->sendResetLink($record);
-                            }),
+                            ->action(
+                                fn (AccessControlUser $record) => resolve(AuthService::class)->sendResetLink($record),
+                            ),
                     ],
                     Feature::enabled(Feature::ACCOUNT_EXPIRY)
                         ? [
@@ -130,8 +129,8 @@ class FilamentUserResource extends Resource
                                 ->requiresConfirmation()
                                 ->icon('heroicon-o-clock'),
                         ]
-                        : []
-                ))
+                        : [],
+                )),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

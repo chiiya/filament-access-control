@@ -6,9 +6,13 @@ use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
 use Chiiya\FilamentAccessControl\Exceptions\InvalidCodeException;
 use Chiiya\FilamentAccessControl\Exceptions\InvalidUserModelException;
 use Chiiya\FilamentAccessControl\Exceptions\UserNotFoundException;
+use Exception;
 use Filament\Facades\Filament;
+use Filament\Notifications\Auth\ResetPassword as ResetPasswordNotification;
+use Filament\Notifications\Notification;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Password;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -106,6 +110,29 @@ class AuthService
         }
 
         $this->login($user, session()->get('filament.remember', false));
+    }
+
+    /**
+     * Manually send a password reset link to the user.
+     */
+    public function sendResetLink(AccessControlUser $user): void
+    {
+        try {
+            $token = Password::broker('filament')->createToken($user);
+            $notification = new ResetPasswordNotification($token);
+            $notification->url = Filament::getResetPasswordUrl($token, $user);
+            $user->notify($notification);
+
+            Notification::make()
+                ->title(__('filament-access-control::default.messages.password_reset_link_sent'))
+                ->success()
+                ->send();
+        } catch (Exception $e) {
+            Notification::make()
+                ->title($e->getMessage())
+                ->danger()
+                ->send();
+        }
     }
 
     private function getUserModel(): Model
