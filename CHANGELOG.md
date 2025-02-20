@@ -2,6 +2,20 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## 2.6.0 - 2025-02-20
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/chiiya/filament-access-control/pull/63
+* Bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/chiiya/filament-access-control/pull/47
+* Bump actions/checkout from 3 to 4 by @dependabot in https://github.com/chiiya/filament-access-control/pull/45
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/chiiya/filament-access-control/pull/63
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/2.5.0...2.6.0
+
 ## 2.5.0 - 2024-10-22
 
 ### What's Changed
