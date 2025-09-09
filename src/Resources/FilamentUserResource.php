@@ -45,6 +45,7 @@ class FilamentUserResource extends Resource
         return $form
             ->schema([
                 Grid::make()
+                    ->columnSpanFull()
                     ->schema(
                         static fn (Component $livewire) => $livewire instanceof ViewFilamentUser
                             ? [
@@ -52,6 +53,7 @@ class FilamentUserResource extends Resource
                                 static::detailsSection(),
                                 Section::make(__('filament-access-control::default.sections.permissions'))
                                     ->description(__('filament-access-control::default.messages.permissions_view'))
+                                    ->columnSpanFull()
                                     ->schema([
                                         PermissionGroup::make('permissions')
                                             ->label(__('filament-access-control::default.fields.permissions'))
@@ -68,6 +70,7 @@ class FilamentUserResource extends Resource
                                 static::detailsSection(),
                                 Section::make(__('filament-access-control::default.sections.permissions'))
                                     ->description(__('filament-access-control::default.messages.permissions_create'))
+                                    ->columnSpanFull()
                                     ->schema([
                                         PermissionGroup::make('permissions')
                                             ->label(__('filament-access-control::default.fields.permissions'))
@@ -244,7 +247,7 @@ class FilamentUserResource extends Resource
             ->schema(static::detailsSectionSchema());
     }
 
-    protected static function evaluateMinDate(Component $livewire): null|Carbon|CarbonImmutable
+    protected static function evaluateMinDate(Component $livewire): Carbon|CarbonImmutable|null
     {
         if ($livewire instanceof CreateFilamentUser) {
             return now();
