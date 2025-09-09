@@ -6,6 +6,7 @@ use Chiiya\FilamentAccessControl\Notifications\SetPassword;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
 use Filament\Facades\Filament;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Spatie\Permission\PermissionRegistrar;
@@ -32,6 +33,6 @@ class CreateFilamentUser extends CreateRecord
     {
         $data['password'] = Str::random(40);
 
-        return $data;
+        return Arr::except($data, ['role']);
     }
 }
