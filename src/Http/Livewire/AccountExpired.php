@@ -6,5 +6,5 @@ use Filament\Pages\SimplePage;
 
 class AccountExpired extends SimplePage
 {
-    protected static string $view = 'filament-access-control::expired';
+    protected string $view = 'filament-access-control::expired';
 }

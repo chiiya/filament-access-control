@@ -2,17 +2,18 @@
 
 namespace Chiiya\FilamentAccessControl\Resources;
 
+use BackedEnum;
 use Chiiya\FilamentAccessControl\Fields\PermissionGroup;
 use Chiiya\FilamentAccessControl\Resources\RoleResource\Pages\CreateRole;
 use Chiiya\FilamentAccessControl\Resources\RoleResource\Pages\EditRole;
 use Chiiya\FilamentAccessControl\Resources\RoleResource\Pages\ListRoles;
 use Chiiya\FilamentAccessControl\Traits\HasExtendableSchema;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,16 +21,16 @@ use Illuminate\Database\Eloquent\Builder;
 class RoleResource extends Resource
 {
     use HasExtendableSchema;
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-user-group';
 
     public static function getModel(): string
     {
         return config('permission.models.role');
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->columns(1)
             ->schema([
                 ...static::insertBeforeFormSchema(),
@@ -65,8 +66,8 @@ class RoleResource extends Resource
                     ->dateTime(),
                 ...static::insertAfterTableSchema(),
             ])
-            ->actions([EditAction::make()])
-            ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])])
+            ->recordActions([EditAction::make()])
+            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])])
             ->filters([]);
     }
 

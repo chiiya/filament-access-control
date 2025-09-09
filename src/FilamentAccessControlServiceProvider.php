@@ -5,8 +5,6 @@ namespace Chiiya\FilamentAccessControl;
 use Chiiya\FilamentAccessControl\Commands\CreateFilamentUser;
 use Chiiya\FilamentAccessControl\Commands\Install;
 use Chiiya\FilamentAccessControl\Http\Livewire\AccountExpired;
-use Chiiya\FilamentAccessControl\Http\Livewire\Login;
-use Chiiya\FilamentAccessControl\Http\Livewire\TwoFactorChallenge;
 use Chiiya\FilamentAccessControl\Models\FilamentUser;
 use Chiiya\FilamentAccessControl\Policies\FilamentUserPolicy;
 use Chiiya\FilamentAccessControl\Policies\PermissionPolicy;
@@ -45,9 +43,7 @@ class FilamentAccessControlServiceProvider extends PackageServiceProvider
     {
         parent::packageBooted();
 
-        $this->registerComponent(Login::class);
         $this->registerComponent(AccountExpired::class);
-        $this->registerComponent(TwoFactorChallenge::class);
         Gate::policy(config('filament-access-control.user_model'), FilamentUserPolicy::class);
         Gate::policy(config('permission.models.role'), RolePolicy::class);
         Gate::policy(config('permission.models.permission'), PermissionPolicy::class);

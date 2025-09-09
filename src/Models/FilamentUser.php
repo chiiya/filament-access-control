@@ -5,8 +5,9 @@ namespace Chiiya\FilamentAccessControl\Models;
 use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
 use Chiiya\FilamentAccessControl\Database\Factories\FilamentUserFactory;
+use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use Chiiya\FilamentAccessControl\Enumerators\RoleName;
-use Chiiya\FilamentAccessControl\Notifications\TwoFactorCode;
+use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
 use Filament\Models\Contracts\FilamentUser as FilamentUserInterface;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
@@ -31,8 +32,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property null|string $first_name
  * @property null|string $last_name
  * @property null|Carbon|CarbonImmutable $expires_at
- * @property null|string $two_factor_code
- * @property null|Carbon|CarbonImmutable $two_factor_expires_at
  * @property null|string $remember_token
  * @property null|Carbon|CarbonImmutable $created_at
  * @property null|Carbon|CarbonImmutable $updated_at
@@ -52,7 +51,7 @@ use Spatie\Permission\Traits\HasRoles;
  *
  * @mixin \Eloquent
  */
-class FilamentUser extends Authenticatable implements AccessControlUser, FilamentUserInterface, HasName
+class FilamentUser extends Authenticatable implements AccessControlUser, FilamentUserInterface, HasEmailAuthentication, HasName
 {
     use HasFactory;
     use HasRoles;
@@ -65,20 +64,11 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
     protected $hidden = ['password', 'remember_token'];
 
     /** {@inheritDoc} */
-    protected $fillable = [
-        'email',
-        'password',
-        'first_name',
-        'last_name',
-        'expires_at',
-        'two_factor_code',
-        'two_factor_expires_at',
-    ];
+    protected $fillable = ['email', 'password', 'first_name', 'last_name', 'expires_at'];
 
     /** {@inheritDoc} */
     protected $casts = [
         'expires_at' => 'datetime',
-        'two_factor_expires_at' => 'datetime',
     ];
 
     /**
@@ -153,35 +143,13 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
         ]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function hasTwoFactorCode(): bool
+    public function hasEmailAuthentication(): bool
     {
-        return $this->getTwoFactorCode() !== null;
+        return Feature::enabled(Feature::TWO_FACTOR);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getTwoFactorCode(): ?string
+    public function toggleEmailAuthentication(bool $condition): void
     {
-        return $this->two_factor_code;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function twoFactorCodeIsExpired(): bool
-    {
-        return $this->two_factor_expires_at !== null && now()->gt($this->two_factor_expires_at);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function sendTwoFactorCodeNotification(): void
-    {
-        $this->notify(new TwoFactorCode);
+        // Nothing to do
     }
 }

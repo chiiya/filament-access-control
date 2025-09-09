@@ -27,6 +27,7 @@
     },
     "require-dev": {
         "chiiya/laravel-code-style": "^3.0",
+        "filament/upgrade": "^4.0",
         "orchestra/testbench": "^9.0|^10.0"
     },
     "autoload": {

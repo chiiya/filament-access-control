@@ -16,24 +16,4 @@ interface AccessControlUser extends Authenticatable, Authorizable
      * Extend the account expiry date.
      */
     public function extend(): void;
-
-    /**
-     * Has a two-factor code already been created?
-     */
-    public function hasTwoFactorCode(): bool;
-
-    /**
-     * Get the users two-factor code.
-     */
-    public function getTwoFactorCode(): ?string;
-
-    /**
-     * Has the two-factor authentication code expired?
-     */
-    public function twoFactorCodeIsExpired(): bool;
-
-    /**
-     * Send email with two-factor code.
-     */
-    public function sendTwoFactorCodeNotification(): void;
 }

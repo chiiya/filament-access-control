@@ -2,16 +2,17 @@
 
 namespace Chiiya\FilamentAccessControl\Resources;
 
+use BackedEnum;
 use Chiiya\FilamentAccessControl\Resources\PermissionResource\Pages\CreatePermission;
 use Chiiya\FilamentAccessControl\Resources\PermissionResource\Pages\EditPermission;
 use Chiiya\FilamentAccessControl\Resources\PermissionResource\Pages\ListPermissions;
 use Chiiya\FilamentAccessControl\Traits\HasExtendableSchema;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,17 +22,17 @@ class PermissionResource extends Resource
 {
     use HasExtendableSchema;
     protected static ?string $model = Permission::class;
-    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-lock-closed';
 
     public static function getModel(): string
     {
         return config('permission.models.permission');
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 ...static::insertBeforeFormSchema(),
                 TextInput::make('name')
                     ->label(__('filament-access-control::default.fields.name'))
@@ -66,8 +67,8 @@ class PermissionResource extends Resource
                     ->dateTime(),
                 ...static::insertAfterTableSchema(),
             ])
-            ->actions([EditAction::make()])
-            ->bulkActions([BulkActionGroup::make([DeleteBulkAction::make()])])
+            ->recordActions([EditAction::make()])
+            ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])])
             ->filters([]);
     }
 

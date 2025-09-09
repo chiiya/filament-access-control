@@ -2,6 +2,7 @@
 
 namespace Chiiya\FilamentAccessControl\Resources;
 
+use BackedEnum;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Chiiya\FilamentAccessControl\Contracts\AccessControlUser;
@@ -14,20 +15,21 @@ use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\ListFilame
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource\Pages\ViewFilamentUser;
 use Chiiya\FilamentAccessControl\Services\AuthService;
 use Chiiya\FilamentAccessControl\Traits\HasExtendableSchema;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -38,12 +40,12 @@ use Livewire\Component;
 class FilamentUserResource extends Resource
 {
     use HasExtendableSchema;
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-users';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Grid::make()
                     ->columnSpanFull()
                     ->schema(
@@ -111,7 +113,7 @@ class FilamentUserResource extends Resource
                 ),
                 ...static::insertAfterTableSchema(),
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 ViewAction::make(),
                 ActionGroup::make(array_merge(
@@ -128,14 +130,21 @@ class FilamentUserResource extends Resource
                         ? [
                             Action::make('extend')
                                 ->label(__('filament-access-control::default.actions.extend'))
-                                ->action('extendUsers')
+                                ->action(function ($record): void {
+                                    $record->extend();
+
+                                    Notification::make()
+                                        ->title(__('filament-access-control::default.messages.account_extended'))
+                                        ->success()
+                                        ->send();
+                                })
                                 ->requiresConfirmation()
                                 ->icon('heroicon-o-clock'),
                         ]
                         : [],
                 )),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                     ...(
@@ -143,7 +152,14 @@ class FilamentUserResource extends Resource
                             ? [
                                 BulkAction::make('extend')
                                     ->label(__('filament-access-control::default.actions.extend'))
-                                    ->action('extendUsers')
+                                    ->action(function ($record): void {
+                                        $record->each->extend();
+
+                                        Notification::make()
+                                            ->title(__('filament-access-control::default.messages.accounts_extended'))
+                                            ->success()
+                                            ->send();
+                                    })
                                     ->requiresConfirmation()
                                     ->deselectRecordsAfterCompletion()
                                     ->color('success')

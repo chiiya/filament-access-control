@@ -18,7 +18,7 @@ class EnsureAccountIsNotExpired
     {
         if ($request->user() && $request->user()->isExpired() && Feature::enabled(Feature::ACCOUNT_EXPIRY)) {
             auth('filament')->logout();
-            $panel ??= Filament::getCurrentPanel()->getId();
+            $panel ??= Filament::getCurrentOrDefaultPanel()->getId();
 
             return Redirect::guest(URL::route("filament.{$panel}.account.expired"));
         }

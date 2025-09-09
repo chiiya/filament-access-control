@@ -3,11 +3,11 @@
 namespace Chiiya\FilamentAccessControl;
 
 use Chiiya\FilamentAccessControl\Enumerators\Feature;
-use Chiiya\FilamentAccessControl\Http\Livewire\Login;
 use Chiiya\FilamentAccessControl\Http\Middleware\EnsureAccountIsNotExpired;
 use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
 use Chiiya\FilamentAccessControl\Resources\PermissionResource;
 use Chiiya\FilamentAccessControl\Resources\RoleResource;
+use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\Contracts\Plugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Panel;
@@ -33,7 +33,8 @@ class FilamentAccessControlPlugin implements Plugin
     {
         $panel
             ->authGuard('filament')
-            ->login(Login::class)
+            ->login()
+            ->multiFactorAuthentication(Feature::enabled(Feature::TWO_FACTOR) ? [EmailAuthentication::make()] : [])
             ->authPasswordBroker('filament')
             ->passwordReset()
             ->authMiddleware([
