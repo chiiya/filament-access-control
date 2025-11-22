@@ -29,8 +29,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int $id
  * @property string $email
  * @property string $password
- * @property null|string $first_name
- * @property null|string $last_name
+ * @property null|string $name
  * @property null|Carbon|CarbonImmutable $expires_at
  * @property null|string $remember_token
  * @property null|Carbon|CarbonImmutable $created_at
@@ -64,7 +63,7 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
     protected $hidden = ['password', 'remember_token'];
 
     /** {@inheritDoc} */
-    protected $fillable = ['email', 'password', 'first_name', 'last_name', 'expires_at'];
+    protected $fillable = ['email', 'password', 'name', 'expires_at'];
 
     /** {@inheritDoc} */
     protected $casts = [
@@ -87,24 +86,6 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
         return $this->hasRole(RoleName::SUPER_ADMIN);
     }
 
-    /**
-     * Provides full name of the current filament user.
-     */
-    public function getFullNameAttribute(): string
-    {
-        if (! $this->first_name && ! $this->last_name) {
-            return '—';
-        }
-
-        $name = $this->first_name ?? '';
-
-        if ($this->last_name) {
-            $name .= ' '.$this->last_name;
-        }
-
-        return $name;
-    }
-
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
@@ -112,17 +93,7 @@ class FilamentUser extends Authenticatable implements AccessControlUser, Filamen
 
     public function getFilamentName(): string
     {
-        return $this->full_name;
-    }
-
-    /**
-     * Return a name.
-     *
-     * Needed for compatibility with filament-logger.
-     */
-    public function getNameAttribute(): string
-    {
-        return $this->getFilamentName();
+        return $this->name;
     }
 
     /**
