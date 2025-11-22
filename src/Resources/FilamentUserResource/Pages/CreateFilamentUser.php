@@ -20,8 +20,10 @@ class CreateFilamentUser extends CreateRecord
 
     public function afterCreate(): void
     {
+        $guardName = config('filament-access-control.guard_name', 'filament');
+
         $user = $this->record;
-        $token = Password::broker('filament')->createToken($user);
+        $token = Password::broker($guardName)->createToken($user);
         $url = Filament::getResetPasswordUrl($token, $user);
         $requestUrl = Filament::getRequestPasswordResetUrl();
         $user->notify(new SetPassword($url, $requestUrl));

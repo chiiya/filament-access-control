@@ -32,10 +32,10 @@ class FilamentAccessControlPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
-            ->authGuard('filament')
+            ->authGuard(config('filament-access-control.guard_name', 'filament'))
             ->login()
             ->multiFactorAuthentication(Feature::enabled(Feature::TWO_FACTOR) ? [EmailAuthentication::make()] : [])
-            ->authPasswordBroker('filament')
+            ->authPasswordBroker(config('filament-access-control.guard_name', 'filament'))
             ->passwordReset()
             ->authMiddleware([
                 Authenticate::class,

@@ -64,7 +64,7 @@ class PermissionGroup extends CheckboxList
 
         $this->options(
             static fn () => Permission::query()
-                ->where('guard_name', 'filament')
+                ->where('guard_name', config('filament-access-control.guard_name', 'filament'))
                 ->pluck('name', 'id')
                 ->map(static fn (string $name) => __($name))
                 ->all(),

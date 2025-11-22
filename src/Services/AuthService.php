@@ -17,7 +17,9 @@ class AuthService
     public function sendResetLink(AccessControlUser $user): void
     {
         try {
-            $token = Password::broker('filament')->createToken($user);
+            $guardName = config('filament-access-control.guard_name', 'filament');
+
+            $token = Password::broker($guardName)->createToken($user);
             $notification = new ResetPasswordNotification($token);
             $notification->url = Filament::getResetPasswordUrl($token, $user);
             $user->notify($notification);

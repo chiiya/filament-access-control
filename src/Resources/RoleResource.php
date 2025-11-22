@@ -94,7 +94,7 @@ class RoleResource extends Resource
     {
         $model = config('permission.models.role');
 
-        return $model::query()->where('guard_name', '=', 'filament');
+        return $model::query()->where('guard_name', '=', config('filament-access-control.guard_name', 'filament'));
     }
 
     public static function getNavigationGroup(): ?string

@@ -25,7 +25,7 @@ class FilamentAccessControlSeeder extends Seeder
         foreach (self::$permissions as $permission) {
             Permission::create([
                 'name' => $permission,
-                'guard_name' => 'filament',
+                'guard_name' => config('filament-access-control.guard_name', 'filament'),
             ]);
         }
 
@@ -33,7 +33,7 @@ class FilamentAccessControlSeeder extends Seeder
             /** @var Role $role */
             $role = Role::create([
                 'name' => $role,
-                'guard_name' => 'filament',
+                'guard_name' => config('filament-access-control.guard_name', 'filament'),
             ]);
 
             foreach (self::$permissions as $permission) {

@@ -65,6 +65,10 @@ class CreateFilamentUser extends Command
             ]);
         }
 
+        // Set default auth guard for spatie to find the roles
+        $guardName = config('filament-access-control.guard_name', 'filament');
+        config()->set('auth.defaults.guard', $guardName);
+
         $user = static::getUserModel()::query()->create($values);
         $user->assignRole(RoleName::SUPER_ADMIN);
         $user->save();
