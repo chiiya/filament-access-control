@@ -94,7 +94,7 @@ class FilamentUserResource extends Resource
                 ...static::insertBeforeTableSchema(),
                 TextColumn::make('full_name')
                     ->label(__('filament-access-control::default.fields.full_name'))
-                    ->searchable(['first_name', 'last_name']),
+                    ->searchable(['name']),
                 TextColumn::make('email')
                     ->label(__('filament-access-control::default.fields.email'))
                     ->searchable(),
@@ -224,13 +224,9 @@ class FilamentUserResource extends Resource
     protected static function detailsSectionSchema(): array
     {
         return [
-            TextInput::make('first_name')
-                ->label(__('filament-access-control::default.fields.first_name'))
-                ->validationAttribute(__('filament-access-control::default.fields.first_name'))
-                ->required(),
-            TextInput::make('last_name')
-                ->label(__('filament-access-control::default.fields.last_name'))
-                ->validationAttribute(__('filament-access-control::default.fields.last_name'))
+            TextInput::make('name')
+                ->label(__('filament-access-control::default.fields.name'))
+                ->validationAttribute(__('filament-access-control::default.fields.name'))
                 ->required(),
             TextInput::make('email')
                 ->label(__('filament-access-control::default.fields.email'))
