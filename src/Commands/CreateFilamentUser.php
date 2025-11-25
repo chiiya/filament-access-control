@@ -71,8 +71,7 @@ class CreateFilamentUser extends Command
         // Find role by name and guard
         $role = Role::findByName(RoleName::SUPER_ADMIN, config('filament-access-control.guard_name', 'filament'));
         $user->assignRole($role);
-
-        $user->assignRole(RoleName::SUPER_ADMIN);
+        
         $user->save();
         $this->info("Success! {$user->email} may now log in.");
 
