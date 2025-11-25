@@ -29,7 +29,7 @@ class RoleSelect extends Select
 
         $this->options(
             static fn () => $model::query()
-                ->where('guard_name', 'filament')
+                ->where('guard_name', config('filament-access-control.guard_name', 'filament'))
                 ->pluck('name', 'id')
                 ->map(static fn (string $name) => __($name))
                 ->all(),

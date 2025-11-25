@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
-use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
-use Chiiya\FilamentAccessControl\Resources\RoleResource;
-use Chiiya\FilamentAccessControl\Resources\PermissionResource;
 use Chiiya\FilamentAccessControl\Models\FilamentUser;
+use Chiiya\FilamentAccessControl\Resources\FilamentUserResource;
+use Chiiya\FilamentAccessControl\Resources\PermissionResource;
+use Chiiya\FilamentAccessControl\Resources\RoleResource;
 
 return [
     /*
@@ -29,6 +29,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Guard Name
+    |--------------------------------------------------------------------------
+    | Auth guard name used for the admin panel.
+    */
+    'guard_name' => 'filament',
+
+    /*
+    |--------------------------------------------------------------------------
     | User Model
     |--------------------------------------------------------------------------
     | User model used for admin access and management.
@@ -45,5 +53,5 @@ return [
         'user' => FilamentUserResource::class,
         'role' => RoleResource::class,
         'permission' => PermissionResource::class,
-    ]
+    ],
 ];
