@@ -2,6 +2,7 @@
 
 namespace Chiiya\FilamentAccessControl;
 
+use Chiiya\FilamentAccessControl\Commands\AssignRoles;
 use Chiiya\FilamentAccessControl\Commands\CreateFilamentUser;
 use Chiiya\FilamentAccessControl\Commands\Install;
 use Chiiya\FilamentAccessControl\Http\Livewire\AccountExpired;
@@ -27,6 +28,7 @@ class FilamentAccessControlServiceProvider extends PackageServiceProvider
             ->hasMigration('create_filament_users_table')
             ->hasMigration('create_filament_password_resets_table')
             ->hasViews('filament-access-control')
+            ->hasCommand(AssignRoles::class)
             ->hasCommand(CreateFilamentUser::class)
             ->hasCommand(Install::class);
     }
@@ -54,8 +56,10 @@ class FilamentAccessControlServiceProvider extends PackageServiceProvider
      */
     protected function mergeGuardsConfig(): void
     {
+        $guardName = config('filament-access-control.guard_name', 'filament');
+
         $this->mergeConfig([
-            'filament' => [
+            $guardName => [
                 'driver' => 'session',
                 'provider' => 'filament_users',
             ],
@@ -80,8 +84,10 @@ class FilamentAccessControlServiceProvider extends PackageServiceProvider
      */
     protected function mergePasswordsConfig(): void
     {
+        $guardName = config('filament-access-control.guard_name', 'filament');
+
         $this->mergeConfig([
-            'filament' => [
+            $guardName => [
                 'provider' => 'filament_users',
                 'email' => 'auth.emails.password',
                 'table' => 'filament_password_resets',
