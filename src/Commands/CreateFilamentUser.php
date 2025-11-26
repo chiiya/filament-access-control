@@ -7,6 +7,7 @@ use Chiiya\FilamentAccessControl\Enumerators\RoleName;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\text;
@@ -66,7 +67,11 @@ class CreateFilamentUser extends Command
         }
 
         $user = static::getUserModel()::query()->create($values);
-        $user->assignRole(RoleName::SUPER_ADMIN);
+
+        // Find role by name and guard
+        $role = Role::findByName(RoleName::SUPER_ADMIN, config('filament-access-control.guard_name', 'filament'));
+        $user->assignRole($role);
+        
         $user->save();
         $this->info("Success! {$user->email} may now log in.");
 

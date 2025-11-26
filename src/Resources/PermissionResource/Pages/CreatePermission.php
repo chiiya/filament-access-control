@@ -14,7 +14,7 @@ class CreatePermission extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['guard_name'] = 'filament';
+        $data['guard_name'] = config('filament-access-control.guard_name', 'filament');
 
         return $data;
     }

@@ -93,7 +93,7 @@ class PermissionResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return Permission::query()->where('guard_name', '=', 'filament');
+        return Permission::query()->where('guard_name', '=', config('filament-access-control.guard_name', 'filament'));
     }
 
     public static function getNavigationGroup(): ?string
