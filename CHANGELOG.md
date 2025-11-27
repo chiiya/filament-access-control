@@ -2,6 +2,17 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v2.7.0 - 2025-11-27
+
+### What's Changed
+
+* Filament 4 compatibility
+* Bump ramsey/composer-install from 2 to 3 by @dependabot[bot] in https://github.com/chiiya/filament-access-control/pull/65
+* Bump dependabot/fetch-metadata from 1.6.0 to 2.3.0 by @dependabot[bot] in https://github.com/chiiya/filament-access-control/pull/64
+* Bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/chiiya/filament-access-control/pull/67
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/2.6.0...2.7.0
+
 ## 2.6.0 - 2025-02-20
 
 ### What's Changed
