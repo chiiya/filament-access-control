@@ -46,8 +46,7 @@ class AssignRoles extends Command implements PromptsForMissingInput
      */
     public function handle(): int
     {
-        $user = static::getUserModel()::query()
-            ->find($this->argument('user'));
+        $user = static::getUserModel()::query()->find($this->argument('user'));
 
         if (! $user) {
             return self::FAILURE;
@@ -72,15 +71,23 @@ class AssignRoles extends Command implements PromptsForMissingInput
             'user' => fn () => search(
                 label: 'Search for a user by email:',
                 options: fn ($value) => mb_strlen($value) > 0
-                    ? static::getUserModel()::whereLike('email', "%{$value}%")->pluck('email', 'id')->all()
+                    ? static::getUserModel()::query()
+                        ->whereLike('email', "%{$value}%")
+                        ->pluck('email', 'id')
+                        ->all()
                     : [],
-            ), 'Which user ID do you want to manage?',
+            ),
+            'Which user ID do you want to manage?',
             'role' => fn () => search(
                 label: 'Search for a role:',
-                placeholder: 'e.g. admin',
                 options: fn ($value) => mb_strlen($value) > 0
-                    ? static::getRoleModel()::whereLike('name', "%{$value}%")->where('guard_name', 'filament')->pluck('name')->all()
+                    ? static::getRoleModel()::query()
+                        ->whereLike('name', "%{$value}%")
+                        ->where('guard_name', '=', config('filament-access-control.guard_name', 'filament'))
+                        ->pluck('name')
+                        ->all()
                     : [],
+                placeholder: 'e.g. admin',
             ),
         ];
     }
