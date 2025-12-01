@@ -74,12 +74,15 @@ class AssignRoles extends Command implements PromptsForMissingInput
                 options: fn ($value) => mb_strlen($value) > 0
                     ? static::getUserModel()::whereLike('email', "%{$value}%")->pluck('email', 'id')->all()
                     : [],
-            ), 'Which user ID do you want to manage?',
+            ),
+            'Which user ID do you want to manage?',
             'role' => fn () => search(
                 label: 'Search for a role:',
                 placeholder: 'e.g. admin',
                 options: fn ($value) => mb_strlen($value) > 0
-                    ? static::getRoleModel()::whereLike('name', "%{$value}%")->where('guard_name', 'filament')->pluck('name')->all()
+                    ? static::getRoleModel()::whereLike('name', "%{$value}%")->where('guard_name', 'filament')->pluck(
+                        'name',
+                    )->all()
                     : [],
             ),
         ];
