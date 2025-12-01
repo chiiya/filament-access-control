@@ -2,6 +2,23 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v2.8.0 - 2025-12-01
+
+### What's Changed
+
+* add dutch, french, and spanish translations by @delboy1978uk in https://github.com/chiiya/filament-access-control/pull/71
+* feat: Polish Translation by @zielu92 in https://github.com/chiiya/filament-access-control/pull/68
+* feat: add config key for guard name by @blumewas in https://github.com/chiiya/filament-access-control/pull/76
+* feat: add assign roles command to manage roles via cli by @blumewas in https://github.com/chiiya/filament-access-control/pull/78
+
+### New Contributors
+
+* @delboy1978uk made their first contribution in https://github.com/chiiya/filament-access-control/pull/71
+* @zielu92 made their first contribution in https://github.com/chiiya/filament-access-control/pull/68
+* @blumewas made their first contribution in https://github.com/chiiya/filament-access-control/pull/76
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/2.7.0...2.8.0
+
 ## v2.7.0 - 2025-11-27
 
 ### What's Changed
