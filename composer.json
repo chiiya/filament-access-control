@@ -20,15 +20,15 @@
     ],
     "require": {
         "php": "^8.2|^8.3|^8.4",
-        "filament/filament": "^4.0",
-        "illuminate/contracts": "^12.0",
+        "filament/filament": "^4.0|^5.3",
+        "illuminate/contracts": "^12.0|^13.0",
         "spatie/laravel-package-tools": "^1.11",
-        "spatie/laravel-permission": "^6.4"
+        "spatie/laravel-permission": "^6.4|^7.2"
     },
     "require-dev": {
         "chiiya/laravel-code-style": "^3.0",
-        "filament/upgrade": "^4.0",
-        "orchestra/testbench": "^9.0|^10.0"
+        "filament/upgrade": "^4.0|^5.3",
+        "orchestra/testbench": "^9.0|^10.0|^11.0"
     },
     "autoload": {
         "psr-4": {
