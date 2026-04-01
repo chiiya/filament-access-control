@@ -2,6 +2,16 @@
 
 All notable changes to `filament-access-control` will be documented in this file.
 
+## v2.9.0 - 2026-04-01
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/chiiya/filament-access-control/pull/80
+* Laravel 13.x Compatibility by @laravel-shift in https://github.com/chiiya/filament-access-control/pull/83
+* Filament 5 Compatibility
+
+**Full Changelog**: https://github.com/chiiya/filament-access-control/compare/2.8.0...2.9.0
+
 ## v2.8.0 - 2025-12-01
 
 ### What's Changed
